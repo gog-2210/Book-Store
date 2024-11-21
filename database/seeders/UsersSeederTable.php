@@ -22,7 +22,7 @@ class UsersSeederTable extends Seeder
                     'password' => bcrypt('123456'),
                     'phone' => 1664872279,
                     'address' => 'Từ liêm Hà nội',
-                    'level' => 2,
+                    'level' => 1,
                     'created_at' => new DateTime(),
                     'updated_at' => new DateTime()
 

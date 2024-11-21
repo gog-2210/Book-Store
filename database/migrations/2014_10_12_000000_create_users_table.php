@@ -14,15 +14,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('remember_token', 100)->nullable();
-            $table->timestamps();
+            $table->string('facebook_id')->nullable();
+            $table->foreignId('current_team_id')->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->bigInteger('phone')->nullable();
             $table->string('address')->nullable();
             $table->smallInteger('level')->default(0)->comment('0:customer, 1:admin');
             $table->boolean('block')->default(false)->comment('true:block');
-            $table->boolean('deleted')->default(false)->comment('true:delete');
+            $table->rememberToken();
+            $table->timestamps();
             $table->softDeletes();
         });
     }
