@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('price')->unsigned();
             $table->integer('quality')->unsigned();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

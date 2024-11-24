@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('nameReceiver')->nullable();
             $table->integer('shipping_fee')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
