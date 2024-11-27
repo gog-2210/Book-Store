@@ -70,7 +70,7 @@ class AuthService
         $user = User::where('email', $facebookUser->getEmail())->first();
 
         if ($user) {
-            // Nếu user đã tồn tại nhưng chưa có facebook_id, cập nhật thêm facebook_id
+            // Nếu user.email đã tồn tại nhưng chưa có facebook_id, cập nhật thêm facebook_id
             if (!$user->facebook_id) {
                 $user->update([
                     'facebook_id' => $facebookUser->getId(),
@@ -122,6 +122,7 @@ class AuthService
         $user = User::create([
             'name' => $googleUser->getName(),
             'email' => $googleUser->getEmail(),
+            'email_verified_at' => now(),
             'password' => bcrypt(uniqid()),
         ]);
 

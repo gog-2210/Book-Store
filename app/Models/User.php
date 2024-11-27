@@ -28,6 +28,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'address',
+        'role',
+        'block',
+        'email_verified_at',
         'facebook_id',
     ];
 
