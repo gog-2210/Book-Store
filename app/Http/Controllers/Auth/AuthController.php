@@ -82,4 +82,30 @@ class AuthController extends Controller
             return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
+
+    public function googleRedirect()
+    {
+        return $this->authService->googleRedirect();
+    }
+
+    public function googleCallback()
+    {
+        try {
+            $user = $this->authService->googleCallback();
+
+            if ($user) {
+                Auth::login($user);
+
+                if ($user->role == 0) {
+                    return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
+                } else {
+                    return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
+                }
+            }
+
+            return redirect()->route('login')->with('error', 'Không thể đăng nhập bằng Google.');
+        } catch (Exception $e) {
+            return redirect()->route('login')->with('error', $e->getMessage());
+        }
+    }
 }

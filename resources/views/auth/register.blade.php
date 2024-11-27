@@ -75,7 +75,7 @@
 
         <!-- Social Login -->
         <div class="mt-6 space-y-4">
-            <a href=""
+            <a href="{{ route('google') }}"
                 class="flex items-center justify-center w-full px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-100 rounded-md focus:ring focus:ring-gray-300 focus:outline-none">
                 <img src="/images/google-logo.png" alt="Google" class="h-5 w-5 mr-2"> Register with Google
             </a>

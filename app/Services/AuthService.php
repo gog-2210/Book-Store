@@ -94,4 +94,32 @@ class AuthService
 
         return $user;
     }
+
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if ($user) {
+            if ($user->block) {
+                throw new Exception('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.');
+            }
+            return $user;
+        }
+
+        // Tạo user mới nếu không tồn tại
+        $user = User::create([
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
+            'password' => bcrypt(uniqid()),
+        ]);
+
+        return $user;
+    }
 }

@@ -27,6 +27,8 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::get('/facebook', [AuthController::class, 'facebookRedirect'])->name('facebook');
     Route::get('auth/facebook/callback', [AuthController::class, 'facebookCallback']);
+    Route::get('/google', [AuthController::class, 'googleRedirect'])->name('google');
+    Route::get('auth/google/callback', [AuthController::class, 'googleCallback']);
 });
 
 Route::middleware('auth')->group(function () {
