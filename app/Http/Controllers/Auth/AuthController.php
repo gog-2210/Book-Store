@@ -3,81 +3,83 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\AuthService;
 use App\Services\UserService;
 use Auth;
-use Illuminate\Http\Request;
+use Exception;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    protected $userService;
+    private AuthService $authService;
 
-    public function __construct(UserService $userService)
+    public function __construct(AuthService $authService)
     {
-        $this->userService = $userService;
+        $this->authService = $authService;
     }
 
-    /**
-     * Show the login form.
-     */
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    /**
-     * Show the registration form.
-     */
     public function showRegisterForm()
     {
         return view('auth.register');
     }
-    /**
-     * Handle login functionality.
-     */
+
     public function login(LoginRequest $request)
     {
         $validated = $request->validated();
 
-        if (Auth::attempt($validated)) {
-
-            request()->session()->regenerate();
-
-            $user = Auth::user();
-
-            if ($user->role == 0) {
-                return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
-            } else {
-                return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
-            }
-        }
-
-        return redirect()->route('login');
+        return $this->authService->login($validated);
     }
 
-    /**
-     * Handle registration functionality.
-     */
     public function register(RegisterRequest $request)
     {
-        $userData = $request->validated();
-
-        $this->userService->create($userData);
-
-        return redirect()->route('login')->with('success', 'Đăng ký thành công');
+        $validated = $request->validated();
+        $result = $this->authService->register($validated);
+        if ($result) {
+            return redirect()->route('login')->with('success', 'Đăng ký thành công');
+        }
+        return redirect()->route('register')->with('error', 'Đăng ký thất bại');
     }
 
-    /**
-     * Log the user out.
-     */
     public function logout()
     {
-        Auth::logout();
+        $result = $this->authService->logout();
 
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        if ($result) {
+            return redirect()->route('frontend.index');
+        }
+    }
 
-        return redirect()->route('frontend.index')->with('success', 'Đăng xuất thành công');
+
+    public function facebookRedirect()
+    {
+        return $this->authService->facebookRedirect();
+    }
+
+    public function facebookCallback()
+    {
+        try {
+            $user = $this->authService->facebookCallback();
+
+            if ($user) {
+                Auth::login($user);
+
+                if ($user->role == 0) {
+                    return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
+                } else {
+                    return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
+                }
+            }
+
+            return redirect()->route('login')->with('error', 'Không thể đăng nhập bằng Facebook.');
+        } catch (Exception $e) {
+            return redirect()->route('login')->with('error', $e->getMessage());
+        }
     }
 }
