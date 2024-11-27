@@ -115,6 +115,13 @@ class AuthService
             if ($user->block) {
                 throw new Exception('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.');
             }
+
+            if(!$user->email_verified_at){
+                $user->update([
+                    'email_verified_at' => now(),
+                ]);
+            }
+
             return $user;
         }
 
