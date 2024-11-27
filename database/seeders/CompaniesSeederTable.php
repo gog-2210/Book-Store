@@ -21,7 +21,6 @@ class CompaniesSeederTable extends Seeder
                     'company_name' => 'First News - Trí Việt',
                     'company_info' => 'Công ty phát hành sách: <b>First News - Trí Việt</b>' . $lorem,
                     'company_image' => '/storage/app/company-image/fn.jpg'
-
                 ],
                 [
                     'company_name' => 'Công ty Văn hóa Hương Trang',

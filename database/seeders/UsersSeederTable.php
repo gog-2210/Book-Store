@@ -18,14 +18,13 @@ class UsersSeederTable extends Seeder
             [
                 [
                     'name' => 'Adminstrator',
-                    'email' => 'buihai2603@gmail.com',
-                    'password' => bcrypt('123456'),
-                    'phone' => 1664872279,
-                    'address' => 'Từ liêm Hà nội',
-                    'level' => 2,
+                    'email' => 'admin@gmail.com',
+                    'password' => bcrypt('12345678'),
+                    'phone' => '0799999999',
+                    'address' => 'Bạch Đằng, Đà Nẵng',
+                    'role' => 1,
                     'created_at' => new DateTime(),
                     'updated_at' => new DateTime()
-
                 ]
             ]
         );
@@ -35,13 +34,10 @@ class UsersSeederTable extends Seeder
                     [
                         'name' => 'Người dùng ' . $i,
                         'email' => 'member' . $i . '@gmail.com',
-                        'password' => bcrypt('123456'),
-                        'phone' => 1664872279,
-                        'address' => 'Địa chỉ nhà số ' . $i . ' Văn Tiến Dũng, HN',
-                        'level' => 0,
-                        'created_at' => new DateTime(),
-                        'updated_at' => new DateTime()
-
+                        'password' => bcrypt('12345678'),
+                        'phone' => '037777111',
+                        'address' => 'Địa chỉ nhà số ' . $i . ' Cao Thắng, ĐN',
+                        'role' => 0,
                     ]
                 ]
             );
