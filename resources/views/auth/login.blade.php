@@ -46,8 +46,7 @@
                         class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-300">
                     <span class="ml-2 text-sm text-gray-600">Remember me</span>
                 </label>
-                <!-- route('password.request') -->
-                <a href="" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
             </div>
 
             <!-- Submit Button -->
