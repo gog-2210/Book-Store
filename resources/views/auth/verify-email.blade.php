@@ -1,39 +1,22 @@
 @extends('layout.app')
 
 @section('content')
-<div class="mb-4 text-sm text-gray-600">
-    {{ __('Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-</div>
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-3xl font-semibold text-center text-blue-600">Xác minh email</h1>
 
-@if (session('status') == 'verification-link-sent')
-    <div class="mb-4 font-medium text-sm text-green-600">
-        {{ __('A new verification link has been sent to the email address you provided in your profile settings.') }}
-    </div>
-@endif
+        <p class="mt-4 text-center text-gray-500">
+            Vui lòng kiểm tra email của bạn để xác minh tài khoản. Nếu bạn chưa nhận được email, nhấn nút bên dưới để gửi lại.
+        </p>
 
-<div class="mt-4 flex items-center justify-between">
-    <form method="POST" action="">
-        @csrf
-
-        <div>
-            <button type="submit">
-                {{ __('Resend Verification Email') }}
-            </button>
-        </div>
-    </form>
-
-    <div>
-        <a href=""
-            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            {{ __('Edit Profile') }}</a>
-
-        <form method="POST" action="" class="inline">
+        <!-- Form for resending verification email -->
+        <form method="POST" action="{{ route('verification.send') }}" class="mt-6">
             @csrf
-
-            <button type="submit"
-                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ms-2">
-                {{ __('Log Out') }}
-            </button>
+            <div class="text-center">
+                <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold text-lg shadow-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105">
+                    Gửi lại email xác minh
+                </button>
+            </div>
         </form>
     </div>
 </div>

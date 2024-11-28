@@ -24,7 +24,7 @@
         <!-- Cart and User Section -->
         <div class="flex items-center space-x-4">
             <!-- Cart -->
-            <a href="{{route('frontend.cart')}}" class="flex items-center space-x-1 hover:text-cyan-700 group">
+            <a href="{{route('cart')}}" class="flex items-center space-x-1 hover:text-cyan-700 group">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="h-6 w-6 group-hover:fill-cyan-700"
                     fill="#2F2F2F" viewBox="0 0 24 24">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -44,21 +44,16 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    @if (Auth::user()->role === 1)
-                        <!-- Hiển thị "Quản trị viên" nếu là admin -->
-                        <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow hidden" id="userDropdown">
-                            <a href="{{route('admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Trang Admin</a>
-                            <form action="{{ route('logout') }}" method="POST" class="block">
-                                @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">Đăng xuất</button>
-                            </form>
-                        </div>
-                    @elseif (Auth::user()->role === 0)
+                    @if (Auth::user())
                         <!-- Hiển thị "Nhân viên" nếu là staff -->
                         <!-- Dropdown -->
                         <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow hidden" id="userDropdown">
-                            <a href="{{route('frontend.profile')}}" class="block px-4 py-2 hover:bg-gray-100">Tài khoản</a>
-                            <a href="{{route('frontend.orders')}}" class="block px-4 py-2 hover:bg-gray-100">Đặt hàng</a>
+                            @if (Auth::user()->role === 1)
+                                <!-- Hiển thị nếu là admin -->
+                                <a href="{{route('admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Trang Admin</a>
+                            @endif
+                            <a href="{{route('profile')}}" class="block px-4 py-2 hover:bg-gray-100">Tài khoản</a>
+                            <a href="{{route('order')}}" class="block px-4 py-2 hover:bg-gray-100">Đặt hàng</a>
                             <form action="{{ route('logout') }}" method="POST" class="block">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">Đăng xuất</button>
