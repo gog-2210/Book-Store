@@ -4,13 +4,9 @@ namespace App\Services;
 use App\Models\User;
 use Auth;
 use Exception;
-use Hash;
-use Illuminate\Auth\Events\PasswordReset;
 use Laravel\Socialite\Facades\Socialite;
 use Log;
 use Password;
-use Psy\Readline\Hoa\Console;
-use Str;
 
 class AuthService
 {
@@ -28,6 +24,10 @@ class AuthService
             $user = Auth::user();
 
             if ($user->role == 0) {
+
+                if (!$user->email_verified_at) {
+                    return redirect()->route('profile')->with('error', 'Tài khoản của bạn chưa được xác thực. Vui lòng gửi lại hoặc kiểm tra email.');
+                }
                 return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
             } else {
                 return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
@@ -67,7 +67,19 @@ class AuthService
     {
         $facebookUser = Socialite::driver('facebook')->stateless()->user();
 
-        $user = User::where('email', $facebookUser->getEmail())->first();
+        $facebookId = $this->model->where('facebook_id', $facebookUser->getId())->first();
+
+
+        if ($facebookId) {
+
+            if ($facebookId->block) {
+                throw new Exception('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.');
+            }
+
+            return $facebookId;
+        }
+
+        $user = $this->model->where('email', $facebookUser->getEmail())->first();
 
         if ($user) {
             // Nếu user.email đã tồn tại nhưng chưa có facebook_id, cập nhật thêm facebook_id
@@ -77,22 +89,24 @@ class AuthService
                 ]);
             }
 
+            if (!$user->email_verified_at) {
+                $user->update([
+                    'email_verified_at' => now(),
+                ]);
+            }
+
             if ($user->block) {
                 throw new Exception('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.');
             }
+
             return $user;
         }
 
-        $facebookId = User::where('facebook_id', $facebookUser->getId())->first();
-
-        if ($facebookId) {
-            return $facebookId;
-        }
-
         // Tạo user mới nếu không tồn tại
-        $user = User::create([
+        $user = $this->model->create([
             'name' => $facebookUser->getName(),
-            'email' => $facebookUser->getEmail(),
+            'email' => $facebookUser->getEmail() ? $facebookUser->getEmail() : null,
+            'email_verified_at' => $facebookUser->getEmail() ? now() : null,
             'facebook_id' => $facebookUser->getId(),
             'password' => bcrypt(uniqid()),
         ]);
@@ -116,7 +130,7 @@ class AuthService
                 throw new Exception('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.');
             }
 
-            if(!$user->email_verified_at){
+            if (!$user->email_verified_at) {
                 $user->update([
                     'email_verified_at' => now(),
                 ]);
@@ -167,5 +181,23 @@ class AuthService
             return redirect()->route('login')->with('error', 'Thay đổi mật khẩu thất bại.');
         }
 
+    }
+
+    public function verify($request)
+    {
+        $request->fulfill();
+
+        return true;
+    }
+
+    public function resend($request)
+    {
+        if ($request->hasVerifiedEmail()) {
+            return true;
+        }
+
+        $request->sendEmailVerificationNotification();
+
+        return false;
     }
 }

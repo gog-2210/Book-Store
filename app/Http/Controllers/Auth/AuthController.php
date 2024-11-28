@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Services\AuthService;
 use Auth;
 use Exception;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Password;
 use Request;
 
@@ -42,6 +43,11 @@ class AuthController extends Controller
         return view('auth.reset-password', ['token' => $token]);
     }
 
+    public function notice()
+    {
+        return view('auth.verify-email');
+    }
+
     public function login(LoginRequest $request)
     {
         $validated = $request->validated();
@@ -53,10 +59,10 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $result = $this->authService->register($validated);
-        if ($result) {
-            return redirect()->route('login')->with('success', 'Đăng ký thành công');
+        if (!$result) {
+            return redirect()->route('register')->with('error', 'Đăng ký thất bại');
         }
-        return redirect()->route('register')->with('error', 'Đăng ký thất bại');
+        Auth::login($result);
     }
 
     public function logout()
@@ -131,5 +137,28 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         return $this->authService->resetPassword($validated);
+    }
+
+    public function verify(EmailVerificationRequest $request)
+    {
+        $result = $this->authService->verify($request);
+
+        if ($result) {
+            return redirect()->route('frontend.index')->with('success', 'Email của bạn đã được xác minh.');
+        }
+
+        return redirect()->route('frontend.index')->with('error', 'Không thể xác minh email của bạn.');
+    }
+
+    public function resend()
+    {
+        $user = Auth::user();
+        $result = $this->authService->resend($user);
+
+        if ($result) {
+            return back()->with('info', 'Email của bạn đã được xác minh.');
+        }
+
+        return back()->with('success', 'Email đã được gửi thanh công.');
     }
 }

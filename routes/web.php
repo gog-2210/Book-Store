@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\OrderController;
+use App\Http\Controllers\Frontend\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('frontend.index');
 })->name('frontend.index');
+
 
 // Authentication routes
 Route::middleware(['guest'])->group(function () {
@@ -39,19 +44,33 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
-Route::middleware('auth')->group(function () {
+Route::get('/email/verify', [AuthController::class, 'notice'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth','signed'])->name('verification.verify');
+Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth','throttle:6,1'])->name('verification.send');
+
+Route::middleware(['auth','verified'])->group(function () {
     // Frontend routes
-    Route::get('/gio-hang', function () {
-        return view('frontend.cart');
-    })->name('frontend.cart');
 
-    Route::get('/tai-khoan', function () {
-        return view('frontend.profile');
-    })->name('frontend.profile');
+    Route::get('/tai-khoan', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/tai-khoan', [ProfileController::class, 'update'])->name('profile.update');//chưa xử lý
+    Route::post('/tai-khoan', [ProfileController::class, 'store'])->name('profile.changePassword');//chưa xử lý
+    Route::delete('/tai-khoan', [ProfileController::class, 'destroy'])->name('profile.destroy');//chưa xử lý
 
-    Route::get('/dat-hang', function () {
-        return view('frontend.orders');
-    })->name('frontend.orders');
+    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
+    Route::post('/gio-hang', [CartController::class, 'store'])->name('cart.store');//chưa xử lý
+    Route::put('/gio-hang/{item}', [CartController::class, 'update'])->name('cart.update');//chưa xử lý
+    Route::delete('/gio-hang/{item}', [CartController::class, 'destroy'])->name('cart.destroy');//chưa xử lý
+    Route::get('/gio-hang/lam-moi', [CartController::class, 'clear'])->name('cart.clear');//chưa xử lý
+
+    Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkout.index');//chưa xử lý
+
+    Route::get('/dat-hang', [OrderController::class, 'index'])->name('order');//chưa xử lý
+    Route::post('/dat-hang', [OrderController::class, 'store'])->name('order.store');//chưa xử lý
+    Route::get('/dat-hang/{id}', [OrderController::class, 'show'])->name('order.show');//chưa xử lý
+
+
+
+
 
     // Backend routes
     Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
