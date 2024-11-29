@@ -45,16 +45,16 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::get('/email/verify', [AuthController::class, 'notice'])->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth','signed'])->name('verification.verify');
-Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth','throttle:6,1'])->name('verification.send');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+
     // Frontend routes
-
     Route::get('/tai-khoan', [ProfileController::class, 'index'])->name('profile');
-    Route::put('/tai-khoan', [ProfileController::class, 'update'])->name('profile.update');//chưa xử lý
-    Route::post('/tai-khoan', [ProfileController::class, 'store'])->name('profile.changePassword');//chưa xử lý
-    Route::delete('/tai-khoan', [ProfileController::class, 'destroy'])->name('profile.destroy');//chưa xử lý
+    Route::put('/tai-khoan', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/tai-khoan', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+    Route::delete('/tai-khoan', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
     Route::post('/gio-hang', [CartController::class, 'store'])->name('cart.store');//chưa xử lý
@@ -75,8 +75,9 @@ Route::middleware(['auth','verified'])->group(function () {
     // Backend routes
     Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
-    });
 
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
 });
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

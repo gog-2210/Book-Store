@@ -62,7 +62,7 @@ class AuthController extends Controller
         if (!$result) {
             return redirect()->route('register')->with('error', 'Đăng ký thất bại');
         }
-        Auth::login($result);
+        return redirect()->route('login')->with('success', 'Đăng ký thành công');
     }
 
     public function logout()

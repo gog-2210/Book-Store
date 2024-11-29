@@ -1,6 +1,6 @@
 <div class="bg-white shadow-md p-4 flex justify-between items-center">
     <div class="text-xl font-semibold">
-        Welcome to Admin Panel
+        <a href="{{ route('admin.index') }}">Trang quản trị</a>
     </div>
     @if (Route::has('login'))
         @auth
