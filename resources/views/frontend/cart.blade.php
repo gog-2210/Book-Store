@@ -57,7 +57,7 @@
         <!-- Tổng cộng -->
         <div class="flex justify-between items-center mt-6">
             <div>
-                <a href=" route('frontend.index') }}" class="text-cyan-600 hover:underline">Tiếp tục mua sắm</a>
+                <a href="{{ route('frontend.index') }}" class="text-cyan-600 hover:underline">Tiếp tục mua sắm</a>
             </div>
             <div>
                 <p class="text-xl font-semibold text-gray-700">Tổng cộng:

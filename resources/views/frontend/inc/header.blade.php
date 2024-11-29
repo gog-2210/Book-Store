@@ -1,8 +1,8 @@
 <header class="bg-white shadow p-4">
     <div class="container mx-auto flex items-center justify-between">
         <!-- Logo -->
-        <a href="/" class="text-lg font-bold text-gray-600">
-            <img src="/path-to-your-logo.png" alt="Logo" class="h-8">
+        <a href="/" class="text-lg font-bold flex items-center text-gray-600">
+            <img src="images/logo.png" alt="Logo" class="h-8 mx-4">BOOK STORE
         </a>
 
         <!-- Search bar -->

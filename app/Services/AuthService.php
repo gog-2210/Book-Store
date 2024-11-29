@@ -24,10 +24,6 @@ class AuthService
             $user = Auth::user();
 
             if ($user->role == 0) {
-
-                if (!$user->email_verified_at) {
-                    return redirect()->route('profile')->with('error', 'Tài khoản của bạn chưa được xác thực. Vui lòng gửi lại hoặc kiểm tra email.');
-                }
                 return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
             } else {
                 return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
@@ -43,7 +39,6 @@ class AuthService
             return $this->model->create($validated);
         } catch (Exception $e) {
             Log::error($e);
-
             return false;
         }
     }
@@ -105,8 +100,8 @@ class AuthService
         // Tạo user mới nếu không tồn tại
         $user = $this->model->create([
             'name' => $facebookUser->getName(),
-            'email' => $facebookUser->getEmail() ? $facebookUser->getEmail() : null,
-            'email_verified_at' => $facebookUser->getEmail() ? now() : null,
+            'email' => $facebookUser->getEmail() ? $facebookUser->getEmail() : uniqid() . '@4cbdbookstore.com',
+            'email_verified_at' => now(),
             'facebook_id' => $facebookUser->getId(),
             'password' => bcrypt(uniqid()),
         ]);
@@ -123,7 +118,7 @@ class AuthService
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $user = User::where('email', $googleUser->getEmail())->first();
+        $user = $this->model->where('email', $googleUser->getEmail())->first();
 
         if ($user) {
             if ($user->block) {
@@ -140,7 +135,7 @@ class AuthService
         }
 
         // Tạo user mới nếu không tồn tại
-        $user = User::create([
+        $user = $this->model->create([
             'name' => $googleUser->getName(),
             'email' => $googleUser->getEmail(),
             'email_verified_at' => now(),

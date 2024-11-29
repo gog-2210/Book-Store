@@ -21,7 +21,7 @@
 
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                        <input type="email" id="email" name="email" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('email', Auth::user()->email) }}" required>
+                        <input type="email" id="email" name="email" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('email', Auth::user()->email) }}" readonly>
                         <x-error-message field="email" />
                     </div>
 
@@ -63,6 +63,7 @@
                         <label for="new_password_confirmation" class="block text-sm font-medium text-gray-600">Xác nhận mật khẩu mới</label>
                         <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
                         <x-error-message field="new_password_confirmation" />
+                        <x-error-message field="new_password" />
                     </div>
 
                     <button type="submit" class="w-full bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 focus:ring-2 focus:ring-cyan-500">Đổi mật khẩu</button>
