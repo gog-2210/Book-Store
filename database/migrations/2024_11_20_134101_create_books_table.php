@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('publishing_house')->nullable();
             $table->string('translator')->nullable();
             $table->integer('number_of_pages')->nullable();
-            $table->integer('quantity')->default(1);
+            $table->integer('quantity')->default(0);
+            $table->integer('sold')->default(0);
             $table->bigInteger('price')->nullable();
             $table->bigInteger('cover_price')->nullable();
             $table->string('book_image')->nullable();
