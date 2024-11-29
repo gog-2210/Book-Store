@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,8 +17,8 @@ class CartController extends Controller
         //     return $item->quantity * $item->product->price;
         // });
 
-        // return view('frontend.cart', compact('cartItems', 'totalPrice'));
-        return view('frontend.cart');
+        // return view('client.cart', compact('cartItems', 'totalPrice'));
+        return view('client.cart');
     }
 
     /**

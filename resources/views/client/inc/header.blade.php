@@ -2,11 +2,11 @@
     <div class="container mx-auto flex items-center justify-between">
         <!-- Logo -->
         <a href="/" class="text-lg font-bold flex items-center text-gray-600">
-            <img src="images/logo.png" alt="Logo" class="h-8 mx-4">BOOK STORE
+            <img src="images/logo.png" alt="Logo" class="h-10 mr-2">BOOK STORE
         </a>
 
         <!-- Search bar -->
-        <div class="flex-grow mx-4">
+        <div class="flex-grow mx-20">
             <form action="" method="GET" class="flex">
                 <input type="text" name="q" placeholder="Tìm kiếm..." class="flex-grow p-2 border rounded-l-md">
                 <button type="submit"
@@ -50,7 +50,7 @@
                         <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow hidden" id="userDropdown">
                             @if (Auth::user()->role === 1)
                                 <!-- Hiển thị nếu là admin -->
-                                <a href="{{route('admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Trang Admin</a>
+                                <a href="{{route('admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Trang Quản trị</a>
                             @endif
                             <a href="{{route('profile')}}" class="block px-4 py-2 hover:bg-gray-100">Tài khoản</a>
                             <a href="{{route('order')}}" class="block px-4 py-2 hover:bg-gray-100">Đặt hàng</a>

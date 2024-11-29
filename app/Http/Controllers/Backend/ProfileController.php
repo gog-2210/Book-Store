@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\UpdateProfilePasswordRequest;
@@ -24,7 +24,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('frontend.profile');
+        return view('client.profile');
     }
 
     public function changePassword(UpdateProfilePasswordRequest $request)

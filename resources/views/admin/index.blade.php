@@ -1,4 +1,4 @@
-@extends('backend.layout.app')
+@extends('admin.layout.app')
 
 @section('content')
 <div class="bg-white p-6 rounded shadow-lg">

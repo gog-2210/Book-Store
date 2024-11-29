@@ -18,7 +18,7 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::user()->role !== 1) {
-            return redirect()->back()->with('error', 'Bạn không có quyền truy cập!');
+            return redirect()->back();
         }
 
         return $next($request);

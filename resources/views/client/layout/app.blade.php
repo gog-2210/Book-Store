@@ -20,11 +20,11 @@
 <body class="antialiased">
     <div class="site-wrap">
         @include('components.alerts')
-        @include('frontend.inc.header')
+        @include('client.inc.header')
 
         @yield('content')
 
-        @include('frontend.inc.footer')
+        @include('client.inc.footer')
     </div>
 </body>
 

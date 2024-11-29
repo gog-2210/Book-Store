@@ -1,4 +1,4 @@
-@extends('frontend.layout.app')
+@extends('client.layout.app')
 
 @section('content')
 <div class="container mx-auto py-6">

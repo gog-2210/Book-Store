@@ -21,13 +21,13 @@
 
     @include('components.alerts')
     {{-- Sidebar --}}
-    @include('backend.inc.sidebar')
+    @include('admin.inc.sidebar')
 
     <div class="flex flex-1">
         {{-- Main Content --}}
         <div class="flex-1 flex flex-col w-full ml-64 h-screen overflow-hidden">
             {{-- Header --}}
-            @include('backend.inc.header')
+            @include('admin.inc.header')
 
             {{-- Content --}}
             <div class="w-full h-full overflow-auto p-4">
@@ -35,7 +35,7 @@
             </div>
 
             {{-- Footer --}}
-            @include('backend.inc.footer')
+            @include('admin.inc.footer')
         </div>
     </div>
 </body>

@@ -2,25 +2,28 @@
 
 namespace Database\Seeders;
 
+use DateTime;
 use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class OrderDetailsSeederTable extends Seeder
+class CartsSeederTable extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        for ($i = 0; $i < 40; $i++) {
-            DB::table('order_details')->insert(
+        for ($i = 1; $i <= 10; $i++) {
+            DB::table('carts')->insert(
                 [
                     [
-                        'order_id' => rand(1, 10),
+                        'user_id' => rand(1, 12),
                         'book_id' => rand(1, 16),
-                        'price' => rand(1, 17) * 10000,
                         'quantity' => rand(1, 10),
+                        'price' => rand(10, 100) * 1000,
+                        'created_at' => new DateTime(),
+                        'updated_at' => new DateTime()
                     ]
                 ]
             );
