@@ -16,7 +16,7 @@
 
                 <!-- Dropdown -->
                 <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow hidden" id="userDropdown">
-                    <a href="{{ route('frontend.index') }}" class="block px-4 py-2 hover:bg-gray-100">Trang Khách</a>
+                    <a href="{{ route('client.index') }}" class="block px-4 py-2 hover:bg-gray-100">Trang Khách</a>
                     <a href="" class="block px-4 py-2 hover:bg-gray-100">Tài khoản</a>
                     <a href="" class="block px-4 py-2 hover:bg-gray-100">Cài đặt</a>
                     <form action="{{ route('logout') }}" method="POST" class="block">

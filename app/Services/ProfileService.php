@@ -48,7 +48,7 @@ class ProfileService
         try {
             $userId = Auth::id();
             $this->model->findOrFail($userId)->delete();
-            return redirect()->route('frontend.index')->with('success', 'Tài khoản đã bị xóa vĩnh viễn.');
+            return redirect()->route('client.index')->with('success', 'Tài khoản đã bị xóa vĩnh viễn.');
         } catch (Exception $e) {
             return false;
         }

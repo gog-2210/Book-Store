@@ -24,7 +24,7 @@ class AuthService
             $user = Auth::user();
 
             if ($user->role == 0) {
-                return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
+                return redirect()->route('client.index')->with('success', 'Đăng nhập thành công');
             } else {
                 return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
             }

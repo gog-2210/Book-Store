@@ -70,7 +70,7 @@ class AuthController extends Controller
         $result = $this->authService->logout();
 
         if ($result) {
-            return redirect()->route('frontend.index');
+            return redirect()->route('client.index');
         }
     }
 
@@ -89,7 +89,7 @@ class AuthController extends Controller
                 Auth::login($user);
 
                 if ($user->role == 0) {
-                    return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
+                    return redirect()->route('client.index')->with('success', 'Đăng nhập thành công');
                 } else {
                     return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
                 }
@@ -115,7 +115,7 @@ class AuthController extends Controller
                 Auth::login($user);
 
                 if ($user->role == 0) {
-                    return redirect()->route('frontend.index')->with('success', 'Đăng nhập thành công');
+                    return redirect()->route('client.index')->with('success', 'Đăng nhập thành công');
                 } else {
                     return redirect()->route('admin.index')->with('success', 'Đăng nhập thành công');
                 }
@@ -144,10 +144,10 @@ class AuthController extends Controller
         $result = $this->authService->verify($request);
 
         if ($result) {
-            return redirect()->route('frontend.index')->with('success', 'Email của bạn đã được xác minh.');
+            return redirect()->route('client.index')->with('success', 'Email của bạn đã được xác minh.');
         }
 
-        return redirect()->route('frontend.index')->with('error', 'Không thể xác minh email của bạn.');
+        return redirect()->route('client.index')->with('error', 'Không thể xác minh email của bạn.');
     }
 
     public function resend()

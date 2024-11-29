@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class OrderController extends Controller
     {
         // $orders = Order::with('items.product')->where('user_id', auth()->id())->get();
         // return view('order.index', compact('orders'));
-        return view('frontend.order');
+        return view('client.order');
     }
 
     /**

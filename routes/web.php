@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Frontend\CartController;
-use App\Http\Controllers\Frontend\CheckoutController;
-use App\Http\Controllers\Frontend\OrderController;
-use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Backend\CartController;
+use App\Http\Controllers\Backend\CheckoutController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +19,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('frontend.index');
-})->name('frontend.index');
-
 
 // Authentication routes
 Route::middleware(['guest'])->group(function () {
@@ -48,8 +44,10 @@ Route::get('/email/verify', [AuthController::class, 'notice'])->name('verificati
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+
+Route::get('/', [HomeController::class, 'index'])->name('client.index');
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Frontend routes
     Route::get('/tai-khoan', [ProfileController::class, 'index'])->name('profile');
     Route::put('/tai-khoan', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/tai-khoan', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
@@ -69,9 +67,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-
-
-    // Backend routes
     Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
 
