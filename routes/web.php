@@ -49,7 +49,6 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->midd
 Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     // Frontend routes
     Route::get('/tai-khoan', [ProfileController::class, 'index'])->name('profile');
     Route::put('/tai-khoan', [ProfileController::class, 'update'])->name('profile.update');

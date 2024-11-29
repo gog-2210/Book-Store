@@ -1,11 +1,14 @@
 <footer class="bg-gray-100 border-t py-10">
-    <div class="container mx-auto px-6">
+    <div class="container mx-auto px-20">
         <!-- Navigation and Contact Info -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Logo and Short Description -->
             <div>
-                <img src="/path-to-logo.png" alt="Logo" class="h-16 mb-4">
-                <p class="text-gray-600">
+                <div class="flex items-center ">
+                    <img src="/images/logo.png" alt="Logo" class="h-10 mr-3">
+                    <h1 class="text-xl font-bold text-[#4b5563] mb-2">BOOK STORE</h1>
+                </div>
+                <p class="text-gray-600 mt-4">
                     Chào mừng bạn đến với Hiệu sách, cửa hàng tổng hợp về sách, sách điện tử và mọi thứ văn học. Khám
                     phá cuộc phiêu lưu tiếp theo của bạn ngày hôm nay!
                 </p>
