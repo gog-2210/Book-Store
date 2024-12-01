@@ -2,7 +2,7 @@
     <div class="container mx-auto flex items-center justify-between">
         <!-- Logo -->
         <a href="/" class="text-lg font-bold flex items-center text-gray-600">
-            <img src="images/logo.png" alt="Logo" class="h-10 mr-2">BOOK STORE
+            <img src="/images/logo.png" alt="Logo" class="h-10 mr-2">BOOK STORE
         </a>
 
         <!-- Search bar -->
@@ -24,7 +24,7 @@
         <!-- Cart and User Section -->
         <div class="flex items-center space-x-4">
             <!-- Cart -->
-            <a href="{{route('cart')}}" class="flex items-center space-x-1 hover:text-cyan-700 group">
+            <a href="{{ route('cart') }}" class="flex items-center space-x-1 hover:text-cyan-700 group">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="h-6 w-6 group-hover:fill-cyan-700"
                     fill="#2F2F2F" viewBox="0 0 24 24">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -53,7 +53,7 @@
                                 <a href="{{route('admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Trang Quản trị</a>
                             @endif
                             <a href="{{route('profile')}}" class="block px-4 py-2 hover:bg-gray-100">Tài khoản</a>
-                            <a href="{{route('order')}}" class="block px-4 py-2 hover:bg-gray-100">Đặt hàng</a>
+                            <a href="{{route('order')}}" class="block px-4 py-2 hover:bg-gray-100">Đơn mua</a>
                             <form action="{{ route('logout') }}" method="POST" class="block">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">Đăng xuất</button>

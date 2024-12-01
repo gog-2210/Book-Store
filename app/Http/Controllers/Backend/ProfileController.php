@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\UpdateProfilePasswordRequest;
-use App\Http\Requests\Frontend\UpdateProfileRequest;
+use App\Http\Requests\Profile\UpdateProfilePasswordRequest;
+use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Services\ProfileService;
 use Auth;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {

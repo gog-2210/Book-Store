@@ -15,25 +15,25 @@
 
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-600">Tên</label>
-                        <input type="text" id="name" name="name" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('name', Auth::user()->name) }}" required>
+                        <input type="text" id="name" name="name" class="w-full border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('name', Auth::user()->name) }}" required>
                         <x-error-message field="name" />
                     </div>
 
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                        <input type="email" id="email" name="email" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('email', Auth::user()->email) }}" readonly>
+                        <input type="email" id="email" name="email" class="w-full  border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('email', Auth::user()->email) }}" readonly>
                         <x-error-message field="email" />
                     </div>
 
                     <div class="mb-4">
                         <label for="phone" class="block text-sm font-medium text-gray-600">Số điện thoại</label>
-                        <input type="text" id="phone" name="phone" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('phone', Auth::user()->phone) }}">
+                        <input type="text" id="phone" name="phone" class="w-full  border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('phone', Auth::user()->phone) }}">
                         <x-error-message field="phone" />
                     </div>
 
                     <div class="mb-4">
                         <label for="address" class="block text-sm font-medium text-gray-600">Địa chỉ</label>
-                        <input type="text" id="address" name="address" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('address', Auth::user()->address) }}">
+                        <input type="text" id="address" name="address" class="w-full  border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" value="{{ old('address', Auth::user()->address) }}">
                         <x-error-message field="address" />
                     </div>
 
@@ -49,19 +49,19 @@
 
                     <div class="mb-4">
                         <label for="current_password" class="block text-sm font-medium text-gray-600">Mật khẩu hiện tại</label>
-                        <input type="password" id="current_password" name="current_password" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
+                        <input type="password" id="current_password" name="current_password" class="w-full  border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
                         <x-error-message field="current_password" />
                     </div>
 
                     <div class="mb-4">
                         <label for="new_password" class="block text-sm font-medium text-gray-600">Mật khẩu mới</label>
-                        <input type="password" id="new_password" name="new_password" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
+                        <input type="password" id="new_password" name="new_password" class="w-full  border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
                         <x-error-message field="new_password" />
                     </div>
 
                     <div class="mb-4">
                         <label for="new_password_confirmation" class="block text-sm font-medium text-gray-600">Xác nhận mật khẩu mới</label>
-                        <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="w-full border-gray-300 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
+                        <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="w-full  border border-gray-200 rounded-lg mt-1 p-2 focus:ring-cyan-500 focus:border-cyan-500" required>
                         <x-error-message field="new_password_confirmation" />
                         <x-error-message field="new_password" />
                     </div>
