@@ -23,6 +23,10 @@ class AuthService
 
             $user = Auth::user();
 
+            if(!$user->email_verified_at){
+                return redirect()->route('verification.notice');
+            }
+
             if ($user->role == 0) {
                 return redirect()->route('client.index')->with('success', 'Đăng nhập thành công');
             } else {
