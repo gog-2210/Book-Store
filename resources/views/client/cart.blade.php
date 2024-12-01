@@ -8,71 +8,150 @@
     <div class="bg-white shadow-lg rounded-lg p-6">
         <!-- Danh sách sản phẩm -->
         <div class="overflow-x-auto">
-            <table class="w-full table-auto border-collapse border border-gray-200">
-                <thead>
-                    <tr class="bg-gray-100 text-gray-700 text-left">
-                        <th class="px-4 py-3">Sản phẩm</th>
-                        <th class="px-4 py-3 text-center">Số lượng</th>
-                        <th class="px-4 py-3 text-center">Giá</th>
-                        <th class="px-4 py-3 text-center">Thành tiền</th>
-                        <th class="px-4 py-3 text-center">Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                <!-- foreach ($cartItems as $item) -->
-                        <tr class="border-b">
-                            <td class="px-4 py-3 flex items-center space-x-4">
-                                <img src=" $item->product->image_url }}" alt=" $item->product->name }}" class="w-16 h-16 object-cover rounded-lg">
-                                <div>
-                                <p class="font-semibold">$item->product->name </p>
-                                    <p class="text-sm text-gray-600">Mã sản phẩm:  $item->product->sku </p>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-center">
-                                <form method="POST" action="route('cart.update', $item->id) }}" class="flex items-center justify-center">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="number" name="quantity" value=" $item->quantity }}" class="w-16 border-gray-300 rounded text-center" min="1">
-                                    <button type="submit" class="ml-2 text-cyan-600 hover:underline">Cập nhật</button>
-                                </form>
-                            </td>
-                            <td class="px-4 py-3 text-center font-medium"> number_format($item->product->price, 0, ',', '.') đ</td>
-                            <td class="px-4 py-3 text-center font-medium"> number_format($item->quantity * $item->product->price, 0, ',', '.') đ</td>
-                            <td class="px-4 py-3 text-center">
-                                <form method="POST" action=" route('cart.destroy', $item->id) ">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline">Xóa</button>
-                                </form>
-                            </td>
+            <form action="{{ route('payment.create') }}" method="GET">
+                <table class="w-full table-auto border-collapse border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700 text-left">
+                            <!-- Checkbox "Chọn tất cả" -->
+                            <th class="px-4 py-3 text-center">
+                                <input type="checkbox" id="select-all" class="form-checkbox">
+                            </th>
+                            <th class="px-4 py-3">Sản phẩm</th>
+                            <th class="px-4 py-3 text-center">Số lượng</th>
+                            <th class="px-4 py-3 text-center">Thành tiền</th>
+                            <th class="px-4 py-3 text-center">Xóa</th>
                         </tr>
-                    <!-- endforeach -->
+                    </thead>
+                    <tbody>
+                        @foreach ($cart as $item)
+                            <tr class="border-b">
+                                <td class="px-4 py-3 text-center">
+                                    <!-- Checkbox cho từng sản phẩm -->
+                                    <input type="checkbox" name="cart_items[]" value="{{ $item->id }}"
+                                        class="form-checkbox item-checkbox">
+                                </td>
+                                <td class="px-4 py-3 flex items-center space-x-4">
+                                    <a href="{{ route('book.show', $item->book->id) }}" class="flex items-center space-x-4">
+                                        <img src="{{ $item->book->book_image }}" alt="{{ $item->book->name }}"
+                                            class="w-16 h-16 object-cover rounded-lg">
+                                        <div>
+                                            <p class="font-semibold">{{$item->book->name }}</p>
+                                            <p class="text-sm text-gray-600">{{ Str::limit($item->book->book_name, 30) }}
+                                            </p>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <form method="POST" action="{{ route('cart.update', $item->id) }}"
+                                        class="flex items-center justify-center">
+                                        @csrf
+                                        @method('PUT')
 
+                                        <!-- Nút trừ -->
+                                        <button type="button"
+                                            class="px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                                            onclick="updateQuantityAndSubmit(this, -1, '{{ $item->id }}')"
+                                            @if($item->quantity <= 1) disabled @endif>
+                                            -
+                                        </button>
 
-                </tbody>
-            </table>
-        </div>
+                                        <!-- Input số lượng -->
+                                        <input type="number" name="quantity" value="{{ $item->quantity }}"
+                                            class="w-16 mx-2 border-gray-300 rounded text-center" min="1"
+                                            id="quantity-{{ $item->id }}" readonly>
 
-        <!-- Tổng cộng -->
-        <div class="flex justify-between items-center mt-6">
-            <div>
-                <a href="{{ route('client.index') }}" class="text-cyan-600 hover:underline">Tiếp tục mua sắm</a>
-            </div>
-            <div>
-                <p class="text-xl font-semibold text-gray-700">Tổng cộng:
-                    <span class="text-cyan-600"> number_format($totalPrice, 0, ',', '.') đ</span>
-                </p>
-            </div>
-        </div>
+                                        <!-- Nút cộng -->
+                                        <button type="button"
+                                            class="px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                                            onclick="updateQuantityAndSubmit(this, 1, '{{ $item->id }}')">
+                                            +
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="px-4 py-3 text-center font-medium">
+                                    {{ number_format($item->quantity * $item->book->price, 0, ',', '.') }}đ
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <form method="POST" action="{{ route('cart.destroy', $item->id) }}">
+                                        @csrf
+                                        @method('DELETE')
 
-        <!-- Hành động -->
-        <div class="mt-6 flex justify-end space-x-4">
-            <a href="{{ route('cart.clear') }}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Xóa
-                toàn bộ</a>
-            <a href="{{ route('checkout.index') }}"
-                class="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700">Tiến hành thanh toán</a>
+                                        <button type="submit" class="text-red-600 hover:underline">Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <!-- Tổng cộng -->
+                <div class="flex justify-between items-center mt-6">
+                    <div>
+                        <a href="{{ route('client.index') }}" class="text-cyan-600 hover:underline">Tiếp tục mua sắm</a>
+                    </div>
+                    <div>
+                        <p class="text-xl font-semibold text-gray-700">Tổng cộng:
+                            <span id="total_price" class="text-cyan-600">0 đ</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Hành động -->
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button type="submit" name="buy"
+                        class="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700">Thanh
+                        toán</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+    // Chức năng chọn tất cả sản phẩm
+    const selectAllCheckbox = document.getElementById('select-all');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    const totalPriceElement = document.querySelector('#total_price');
+
+    selectAllCheckbox.addEventListener('change', function () {
+        itemCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        updateTotalPrice();
+    });
+
+    // Cập nhật tổng cộng khi thay đổi lựa chọn checkbox
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateTotalPrice);
+    });
+    function updateTotalPrice() {
+        let total = 0;
+
+        itemCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const price = parseFloat(checkbox.closest('tr').querySelector('.font-medium').innerText.replace(/\D/g, ''));
+                total += price;
+            }
+        });
+
+        totalPriceElement.textContent = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(total);
+    }
+
+    function updateQuantityAndSubmit(button, change, itemId) {
+        const input = button.parentElement.querySelector('input[name="quantity"]');
+        let currentQuantity = parseInt(input.value);
+
+        currentQuantity += change;
+
+        if (currentQuantity < 1) currentQuantity = 1;
+
+        input.value = currentQuantity;
+
+        button.parentElement.submit();
+    }
+
+</script>
 @endsection

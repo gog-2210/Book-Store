@@ -3,69 +3,65 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Cart\StoreCartRequest;
+use App\Http\Requests\Cart\UpdateCartRequest;
+use App\Services\CartService;
 
 class CartController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
-        // $totalPrice = $cartItems->sum(function ($item) {
-        //     return $item->quantity * $item->product->price;
-        // });
+        $cart = $this->cartService->getCart();
 
-        // return view('client.cart', compact('cartItems', 'totalPrice'));
-        return view('client.cart');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('client.cart', compact('cart'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCartRequest $request)
     {
-        //
-    }
+        if ($request->input('action') === 'addToCart') {
+            $validated = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+            $result = $this->cartService->addToCart($validated);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+            if ($result) {
+                return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng');
+            }
+
+            return redirect()->back()->with('error', 'Thêm sản phẩm vào giỏ hàng thất bại');
+        }
+        $validated = $request->validated();
+
+        $result = $this->cartService->addToCart($validated);
+
+        return redirect()->route('cart');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCartRequest $request, string $id)
     {
-        // $request->validate([
-        //     'quantity' => 'required|integer|min:1',
-        // ]);
+        $validated = $request->validated();
+        $result = $this->cartService->update($validated, $id);
 
-        // $cartItem = Cart::findOrFail($id);
-        // $cartItem->update(['quantity' => $request->quantity]);
+        if (!$result) {
+            return redirect()->back()->with('error', 'Cập nhật giỏ hàng thất bại');
+        }
 
-        // return redirect()->route('cart.index')->with('success', 'Cập nhật số lượng thành công');
+        return redirect()->route('cart');
     }
 
     /**
@@ -73,15 +69,23 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        // Cart::findOrFail($id)->delete();
+        $result = $this->cartService->delete($id);
 
-        // return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa');
+        if (!$result) {
+            return redirect()->back()->with('error', 'Xóa sản phẩm khỏi giỏ hàng thất bại');
+        }
+
+        return redirect()->route('cart');
     }
 
-    public function clear()
+    public function deleteAll()
     {
-        // Cart::where('user_id', auth()->id())->delete();
+        $result = $this->cartService->deleteAll();
 
-        // return redirect()->route('cart.index')->with('success', 'Giỏ hàng đã được làm trống');
+        if (!$result) {
+            return redirect()->back()->with('error', 'Xóa toàn bộ sản phẩm khỏi giỏ hàng thất bại');
+        }
+
+        return redirect()->route('cart');
     }
 }

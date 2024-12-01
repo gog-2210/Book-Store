@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Backend\CartController;
-use App\Http\Controllers\Backend\CheckoutController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProfileController;
@@ -45,28 +45,32 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->midd
 Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
-Route::get('/', [HomeController::class, 'index'])->name('client.index');
+Route::get('/', [HomeController::class, 'home'])->name('client.index');
+Route::get('/sach/{bookId}', [HomeController::class, 'book'])->name('book.show');
+Route::get('/danh-muc/{categoryId}', [HomeController::class, 'category'])->name('category.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Client routes
     Route::get('/tai-khoan', [ProfileController::class, 'index'])->name('profile');
     Route::put('/tai-khoan', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/tai-khoan', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
     Route::delete('/tai-khoan', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart');
-    Route::post('/gio-hang', [CartController::class, 'store'])->name('cart.store');//chưa xử lý
-    Route::put('/gio-hang/{item}', [CartController::class, 'update'])->name('cart.update');//chưa xử lý
-    Route::delete('/gio-hang/{item}', [CartController::class, 'destroy'])->name('cart.destroy');//chưa xử lý
-    Route::get('/gio-hang/lam-moi', [CartController::class, 'clear'])->name('cart.clear');//chưa xử lý
+    Route::post('/gio-hang', [CartController::class, 'store'])->name('cart.store');
+    Route::put('/gio-hang/{cartId}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/gio-hang/{cartId}', [CartController::class, 'destroy'])->name('cart.destroy');
 
-    Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkout.index');//chưa xử lý
+    Route::get('/thanh-toan', [PaymentController::class, 'create'])->name('payment.create');
+    Route::get('/thanh-toan/khoi-tao', [PaymentController::class, 'store'])->name('payment.store');
+    Route::get('/thanh-toan/ket-qua', [PaymentController::class, 'return'])->name('payment.return');
 
-    Route::get('/dat-hang', [OrderController::class, 'index'])->name('order');//chưa xử lý
-    Route::post('/dat-hang', [OrderController::class, 'store'])->name('order.store');//chưa xử lý
-    Route::get('/dat-hang/{id}', [OrderController::class, 'show'])->name('order.show');//chưa xử lý
+    Route::get('/dat-hang', [HomeController::class, 'purchaseOrder'])->name('order');//chưa xử lý
+    Route::get('/dat-hang/{orderId}', [HomeController::class, 'purchaseOrderDetail'])->name('order.show');//chưa xử lý
 
 
 
+    // Admin routes
     Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
 

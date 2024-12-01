@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('payment_id')->nullable()->constrained('payments');
             $table->string('order_status')->default('Đang xử lý đơn hàng');
             $table->string('shipping_address')->nullable();
+            $table->decimal('total_amount', 15, 2);
+            $table->decimal('discount_amount', 10, 2)->default(0);
             $table->string('phoneReceiver')->nullable();
             $table->string('nameReceiver')->nullable();
             $table->integer('shipping_fee')->nullable();

@@ -14,7 +14,7 @@ class OrderController extends Controller
     {
         // $orders = Order::with('items.product')->where('user_id', auth()->id())->get();
         // return view('order.index', compact('orders'));
-        return view('client.order');
+        // return view('client.purchase-order');
     }
 
     /**

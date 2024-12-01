@@ -42,4 +42,13 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+
+    'vnpay' => [
+        'vnp_TmnCode' => env('VN_PAY_TERMINAL_CODE'),
+        'vnp_HashSecret' => env('VN_PAY_SECRET_KEY'),
+        'vnp_Url' => env('VN_PAY_URL'),
+        'vnp_Returnurl' => env('VN_PAY_RETURN_URL'),
+        'vnp_apiUrl' => env('VN_PAY_MERCHANT_API_URL'),
+        'apiUrl' => env('VN_PAY_TRANSACTION_API_URL'),
+    ],
 ];
