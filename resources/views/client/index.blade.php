@@ -14,7 +14,7 @@
 
 <section class="py-12 bg-gray-100">
     <div class="container mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-8">Danh Mục Nổi Bật</h2>
+        <h2 class="text-2xl font-bold text-center mb-8">Danh Mục Nổi Bật</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         @foreach($categories as $category)
             <x-category-item :category="$category"

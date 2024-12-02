@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\CartService;
 use App\Services\CategoryService;
 use Illuminate\Support\ServiceProvider;
 use View;
@@ -21,8 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Truyền dữ liệu categories vào tất cả các view
         View::composer('*', function ($view) {
+            $view->with('cart', app(CartService::class)->getCart());
+
             $view->with('parentCategories', app(CategoryService::class)->getByParentID(0));
             $view->with('categories', app(CategoryService::class)->getAll());
         });
