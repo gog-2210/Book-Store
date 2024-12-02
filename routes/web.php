@@ -65,8 +65,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/thanh-toan/khoi-tao', [PaymentController::class, 'store'])->name('payment.store');
     Route::get('/thanh-toan/ket-qua', [PaymentController::class, 'return'])->name('payment.return');
 
-    Route::get('/dat-hang', [HomeController::class, 'purchaseOrder'])->name('order');//chưa xử lý
-    Route::get('/dat-hang/{orderId}', [HomeController::class, 'purchaseOrderDetail'])->name('order.show');//chưa xử lý
+    Route::get('/dat-hang', [HomeController::class, 'purchaseOrder'])->name('order');
+    Route::get('/dat-hang/{orderId}', [HomeController::class, 'purchaseOrderDetail'])->name('order.show');
 
 
 

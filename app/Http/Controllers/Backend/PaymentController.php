@@ -104,13 +104,15 @@ class PaymentController extends Controller
      */
     public function create(Request $request)
     {
-        $selectedItems = $request->input('cart_items', []);
+        $selectedItems = json_decode($request->input('cart_items', '[]'), true);
+
         if (empty($selectedItems)) {
             return redirect()->route('cart')->with('error', 'Vui lòng chọn ít nhất một sản phẩm.');
         }
 
         $cartItems = $this->cartService->getCartByIds($selectedItems);
         session()->put('cart', $cartItems);
+
         $totalPrice = $cartItems->sum(function ($item) {
             return $item->quantity * $item->book->price ?? 0;
         });
