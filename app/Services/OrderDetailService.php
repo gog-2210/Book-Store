@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\OrderDetail;
+use Illuminate\Support\Facades\DB;
 
 class OrderDetailService
 {
@@ -36,7 +37,7 @@ class OrderDetailService
 
         return $this->model
             ->whereIn('order_id', $orders->pluck('id'))
-            ->sum(\DB::raw('price * quantity'));
+            ->sum(DB::raw('price * quantity'));
     }
 
     public function create($data)

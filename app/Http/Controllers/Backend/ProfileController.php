@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfilePasswordRequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Services\ProfileService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {

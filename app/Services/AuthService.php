@@ -2,11 +2,11 @@
 namespace App\Services;
 
 use App\Models\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 use Laravel\Socialite\Facades\Socialite;
-use Log;
-use Password;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
 
 class AuthService
 {
@@ -64,7 +64,7 @@ class AuthService
 
     public function facebookCallback()
     {
-        $facebookUser = Socialite::driver('facebook')->stateless()->user();
+        $facebookUser = Socialite::driver('facebook')->user();
 
         $facebookId = $this->model->where('facebook_id', $facebookUser->getId())->first();
 
@@ -120,7 +120,7 @@ class AuthService
 
     public function googleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        $googleUser = Socialite::driver('google')->user();
 
         $user = $this->model->where('email', $googleUser->getEmail())->first();
 

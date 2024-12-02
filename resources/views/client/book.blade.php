@@ -37,7 +37,7 @@
 
             <!-- Thông tin bổ sung -->
             <div class="mt-6">
-                <p><strong>Tác giả:</strong> {{ $book->author->author_name ?? 'Không rõ' }}</p>
+                <p><strong>Tác giả:</strong> {{ $book->author ?? 'Không rõ' }}</p>
                 <p><strong>Nhà xuất bản:</strong> {{ $book->publishing_house ?? 'Không rõ' }}</p>
                 <p><strong>Số trang:</strong> {{ $book->number_of_pages ?? 'Không rõ' }}</p>
                 <p><strong>Chất lượng:</strong> {{ $book->quality ?? 'Không rõ' }}</p>

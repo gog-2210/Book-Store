@@ -2,9 +2,9 @@
 namespace App\Services;
 
 use App\Models\User;
-use Auth;
 use Exception;
-use Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileService
 {
