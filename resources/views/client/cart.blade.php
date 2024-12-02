@@ -8,7 +8,7 @@
     <div class="bg-white shadow-lg rounded-lg p-6">
         <!-- Danh sách sản phẩm -->
         <div class="overflow-x-auto">
-            <form action="{{ route('payment.create') }}" method="GET">
+
                 <table class="w-full table-auto border-collapse border border-gray-200">
                     <thead>
                         <tr class="bg-gray-100 text-gray-700 text-left">
@@ -42,13 +42,13 @@
                                     </a>
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <form method="POST" action="{{ route('cart.update', $item->id) }}"
+                                    <form id="form_cart_update" method="POST" name="cart_update" action="{{ route('cart.update', $item->id) }}"
                                         class="flex items-center justify-center">
                                         @csrf
                                         @method('PUT')
 
                                         <!-- Nút trừ -->
-                                        <button type="button"
+                                        <button type="button" id="decrease"
                                             class="px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
                                             onclick="updateQuantityAndSubmit(this, -1, '{{ $item->id }}')"
                                             @if($item->quantity <= 1) disabled @endif>
@@ -61,7 +61,7 @@
                                             id="quantity-{{ $item->id }}" readonly>
 
                                         <!-- Nút cộng -->
-                                        <button type="button"
+                                        <button type="button" id="increase"
                                             class="px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
                                             onclick="updateQuantityAndSubmit(this, 1, '{{ $item->id }}')">
                                             +
@@ -72,11 +72,11 @@
                                     {{ number_format($item->quantity * $item->book->price, 0, ',', '.') }}đ
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <form method="POST" action="{{ route('cart.destroy', $item->id) }}">
+                                    <form id="form_cart_destroy" name="cart_destroy" method="POST" action="{{ route('cart.destroy', $item->id) }}">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit" class="text-red-600 hover:underline">Xóa</button>
+                                        <button type="submit" id="destroy" class="text-red-600 hover:underline">Xóa</button>
                                     </form>
                                 </td>
                             </tr>
@@ -98,11 +98,11 @@
 
                 <!-- Hành động -->
                 <div class="mt-6 flex justify-end space-x-4">
-                    <button type="submit" name="buy"
+                    <button type="button" id="submit_payment_create" onclick="submit_payment_create()" name="buy"
                         class="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700">Thanh
                         toán</button>
                 </div>
-            </form>
+
         </div>
     </div>
 </div>
@@ -153,5 +153,19 @@
         button.parentElement.submit();
     }
 
+    function submit_payment_create() {
+        const form = document.createElement('form');
+        form.method = 'GET';
+        form.action = '{{ route('payment.create') }}';
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'cart_items';
+        input.value = JSON.stringify(Array.from(document.querySelectorAll('.item-checkbox:checked')).map(checkbox => checkbox.value));
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 @endsection
