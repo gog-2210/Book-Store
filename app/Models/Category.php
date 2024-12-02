@@ -23,7 +23,7 @@ class Category extends Model
 
     public function subCategories()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id')->orderBy('order');
     }
 
     public function books()

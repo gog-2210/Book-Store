@@ -5,8 +5,58 @@
             <img src="/images/logo.png" alt="Logo" class="h-10 mr-2">BOOK STORE
         </a>
 
+        <!-- Category Icon with Hover Dropdown -->
+        <div class="relative group ml-20">
+            <!-- Category Icon -->
+            <div class="flex items-center cursor-pointer" onclick="toggleDropdown(event)">
+                <svg fill="#000000" class="h-6 w-6 text-gray-700 transition-colors duration-200" viewBox="0 0 35 35"  xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z" />
+                    <path
+                        d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z" />
+                    <path
+                        d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z" />
+                    <path
+                        d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-700 transition-colors duration-200"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"></path>
+                </svg>
+            </div>
+
+            <!-- Dropdown Menu on Click -->
+            <div class="relative">
+                <!-- Dropdown Menu -->
+                <div role="menu"
+                    class="absolute hidden bg-white border border-gray-300 shadow-lg rounded-md mt-2 w-80 z-10 category-dropdown">
+                    @foreach($parentCategories as $category)
+                        <div role="menu-parent" class="parent-category relative group pc-{{ $category->id }}">
+                            <!-- Parent Category Item -->
+                            <a href="{{ route('category.show', $category->id) }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 font-bold">
+                                {{ $category->category_name }}
+                            </a>
+
+                            <!-- Subcategories (Hidden by Default) -->
+                            <div
+                                class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                @foreach($category->subCategories as $subCategory)
+                                    <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                        {{ $subCategory->category_name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </div>
+
         <!-- Search bar -->
-        <div class="flex-grow mx-20">
+        <div class="flex-grow mx-4 mr-16">
             <form action="" method="GET" class="flex">
                 <input type="text" name="q" placeholder="Tìm kiếm..." class="flex-grow p-2 border rounded-l-md">
                 <button type="submit"
@@ -15,10 +65,12 @@
                         <path
                             d="M11 2a9 9 0 105.64 16.11l5.63 5.63a1 1 0 001.41-1.41l-5.63-5.63A9 9 0 0011 2zm0 2a7 7 0 110 14 7 7 0 010-14z" />
                     </svg>
-
                 </button>
             </form>
         </div>
+        <div class="flex items-center space-x-6">
+        </div>
+
 
 
         <!-- Cart and User Section -->
@@ -91,5 +143,50 @@
         if (!button.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.classList.add('hidden');
         }
+    });
+
+    function toggleDropdown(event) {
+        // Prevent the click event from bubbling up
+        event.stopPropagation();
+
+        // Get the dropdown menu
+        const dropdown = event.target.closest('.group').querySelector('.category-dropdown');
+
+        // Toggle visibility of the dropdown menu
+        dropdown.classList.toggle('hidden');
+    }
+
+    // Close the dropdown if user clicks outside
+    document.addEventListener('click', function (event) {
+        const dropdowns = document.querySelectorAll('.category-dropdown');
+        dropdowns.forEach(function (dropdown) {
+            // Check if the clicked element is outside the dropdown
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const parentCategories = document.querySelectorAll('.parent-category');
+
+        parentCategories.forEach((parent) => {
+            parent.addEventListener('mouseenter', function () {
+                // Ẩn tất cả sub-categories
+                document.querySelectorAll('.sub-categories').forEach(sub => {
+                    sub.classList.add('hidden');
+                });
+
+                // Hiển thị sub-categories của parent đang hover
+                const subCategories = parent.querySelector('.sub-categories');
+                subCategories.classList.remove('hidden');
+            });
+
+            parent.addEventListener('mouseleave', function () {
+                // Ẩn sub-categories khi rời khỏi
+                const subCategories = parent.querySelector('.sub-categories');
+                subCategories.classList.add('hidden');
+            });
+        });
     });
 </script>
