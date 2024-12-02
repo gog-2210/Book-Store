@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {

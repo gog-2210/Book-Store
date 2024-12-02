@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Backend\BookController;
 use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Backend\CartController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\CompanyController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProfileController;
@@ -73,6 +76,68 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin routes
     Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
+
+        // Route for Categories
+        Route::prefix('categories')->name('admin.categories.')->group(function () {
+            // Route để hiển thị danh sách category
+            Route::get('/', [CategoryController::class, 'index'])->name('index');
+            
+            // Route để tạo mới category
+            Route::get('create', [CategoryController::class, 'create'])->name('create');
+            Route::post('create', [CategoryController::class, 'store'])->name('store');
+            
+            Route::get('{id}', [CategoryController::class, 'show'])->name('show'); 
+
+            // Route để sửa category
+            Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+            Route::put('edit/{id}', [CategoryController::class, 'update'])->name('update');
+            
+            // Route để xóa category
+            Route::delete('delete/{id}', [CategoryController::class, 'destroy'])->name('destroy');    
+            
+            Route::post('admin/categories/getSubCategories', [CategoryController::class, 'getSubCategories'])->name('getSubCategories');
+
+        });
+
+        // Route for Companies
+        Route::prefix('companies')->name('admin.companies.')->group(function () {
+            // Route để hiển thị danh sách company
+            Route::get('/', [CompanyController::class, 'index'])->name('index');
+
+            // Route để tạo mới company
+            Route::get('create', [CompanyController::class, 'create'])->name('create');
+            Route::post('create', [CompanyController::class, 'store'])->name('store');
+
+            // Route để hiển thị chi tiết company
+            Route::get('{id}', [CompanyController::class, 'show'])->name('show');
+
+            // Route để sửa company
+            Route::get('edit/{id}', [CompanyController::class, 'edit'])->name('edit');
+            Route::put('edit/{id}', [CompanyController::class, 'update'])->name('update');
+
+            // Route để xóa company
+            Route::delete('delete/{id}', [CompanyController::class, 'destroy'])->name('destroy');
+        });
+
+        // Route for Books
+        Route::prefix('books')->name('admin.books.')->group(function () {
+            // Hiển thị danh sách sách
+            Route::get('/', [BookController::class, 'index'])->name('index');
+
+            // Tạo mới sách
+            Route::get('create', [BookController::class, 'create'])->name('create');
+            Route::post('/', [BookController::class, 'store'])->name('store'); // Lưu sách mới
+
+            // Sửa sách
+            Route::get('/{book}/edit', [BookController::class, 'edit'])->name('edit'); // Trang chỉnh sửa sách
+            Route::put('/{book}', [BookController::class, 'update'])->name('update'); // Cập nhật sách
+
+            // Xóa sách
+            Route::delete('delete/{id}', [BookController::class, 'destroy'])->name('destroy');
+            
+            // Chi tiết sách (nếu có cần)
+            Route::get('{id}', [BookController::class, 'show'])->name('show');
+        });
 
     });
 });
