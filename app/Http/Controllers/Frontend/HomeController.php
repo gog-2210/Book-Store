@@ -35,8 +35,8 @@ class HomeController extends Controller
     {
         $booksBySuggest = $this->bookService->getBySuggest();
         $categories = $this->categoryService->getAll();
-        $category = $this->categoryService->getById(1);
-        return view('client.index', compact('booksBySuggest', 'categories'));
+
+        return view('client.index', compact('booksBySuggest'));
     }
 
     public function book($bookId)
@@ -48,8 +48,7 @@ class HomeController extends Controller
 
     public function category($categoryId)
     {
-        $categories = $this->categoryService->getAll();
-        return view('client.category', compact( 'categories'));
+        return view('client.category');
     }
 
     public function purchaseOrder()
