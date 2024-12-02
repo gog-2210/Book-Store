@@ -2,7 +2,7 @@
     class="group relative bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl">
     <a href="{{ route('book.show', $book->id) }}">
         <!-- Hình ảnh sách -->
-        <img src="{{ asset('storage/' . $book->book_image) }}"
+        <img src="{{ asset('storage/'.$book->book_image) }}"
             class="w-full h-44 object-cover group-hover:opacity-80 transition-opacity duration-300"
             alt="{{ $book->book_name }}">
 

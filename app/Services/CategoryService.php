@@ -25,7 +25,7 @@ class CategoryService
             $query->where('category_name', 'like', '%' . $searchTerm . '%');
         }
 
-        return $query->paginate($perPage); 
+        return $query->paginate($perPage);
     }
 
     public function getById($id)
@@ -48,7 +48,7 @@ class CategoryService
         return $this->model->where('parent_id', '!=', 0)->get();
     }
 
-    
+
     public function create($data)
     {
         return $this->model->create($data);

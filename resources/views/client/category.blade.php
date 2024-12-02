@@ -7,7 +7,7 @@
         <div class="bg-white rounded-lg shadow-md p-4">
             <h2 class="text-lg font-bold text-gray-800 mb-4">Danh Mục</h2>
             <ul class="space-y-2">
-                @foreach($categories as $parent)
+                @foreach($itemCategories as $parent)
                     @if($parent->parent_id === null)
                         <li>
                             <a href="{{ route('category.show', $parent->id) }}" class="block text-gray-700 hover:text-blue-600 font-semibold">

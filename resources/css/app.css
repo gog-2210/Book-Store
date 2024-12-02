@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.hidden {
+    display: none;
+}
+
+.category-dropdown {
+    display: none;
+}
+
+.category-dropdown:not(.hidden) {
+    display: block;
+}
