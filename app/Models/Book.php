@@ -15,7 +15,7 @@ class Book extends Model
         'description',
         'publish_date',
         'suggest',
-        'author_id',
+        'author',
         'company_id',
         'category_id',
         'publishing_house',
@@ -33,11 +33,6 @@ class Book extends Model
         'suggest' => 'boolean',
         'quality' => 'boolean',
     ];
-
-    public function author()
-    {
-        return $this->belongsTo(Author::class);
-    }
 
     public function company()
     {

@@ -17,6 +17,17 @@ class CategoryService
         return $this->model->all();
     }
 
+    public function getAllWithSearchAndPagination($searchTerm = null, $perPage = 10)
+    {
+        $query = $this->model->query();
+
+        if ($searchTerm) {
+            $query->where('category_name', 'like', '%' . $searchTerm . '%');
+        }
+
+        return $query->paginate($perPage); 
+    }
+
     public function getById($id)
     {
         return $this->model->where('id', $id)->first();
@@ -34,10 +45,10 @@ class CategoryService
 
     public function getCategoriesByParentID($parentId)
     {
-        return $this->model->where('parent_id', $parentId)->get();
+        return $this->model->where('parent_id', '!=', 0)->get();
     }
 
-
+    
     public function create($data)
     {
         return $this->model->create($data);
@@ -52,4 +63,18 @@ class CategoryService
     {
         return $this->model->where('id', $id)->delete();
     }
+
+    public function getSubCategories($parentId)
+    {
+        return $this->model->where('parent_id', $parentId)->get();
+    }
+
+    // Lấy danh sách category cha
+    public function getParentCategories()
+    {
+        return $this->model->where('parent_id', 0)->get();
+    }
+
+
+
 }
