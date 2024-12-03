@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\CompanyController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProfileController;
+use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -137,6 +138,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
             
             // Chi tiết sách (nếu có cần)
             Route::get('{id}', [BookController::class, 'show'])->name('show');
+        });
+
+        // Route for Users
+        Route::prefix('users')->name('admin.users.')->group(function () {
+            // Hiển thị danh sách người dùng
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::post('/{id}/unlock', [UserController::class, 'unlock'])->name('unlock'); // Mở khóa user (khôi phục)
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+        });
+
+        // Route for Orders
+        Route::prefix('orders')->name('admin.orders.')->group(function () {
+            // Hiển thị danh sách đơn hàng
+            Route::get('/', [OrderController::class, 'index'])->name('index');
+
+            // Hiển thị chi tiết đơn hàng
+            Route::get('{id}', [OrderController::class, 'show'])->name('show');
+
+            // Cập nhật trạng thái đơn hàng
+            Route::patch('{orderId}/status', [OrderController::class, 'updateStatus'])->name('updateStatus');
+
+            // Cập nhật thông tin giao hàng
+            Route::put('{order}/shipping', [OrderController::class, 'updateShipping'])->name('updateShipping');
+            
         });
 
     });
