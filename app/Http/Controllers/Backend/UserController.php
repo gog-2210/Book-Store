@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -16,67 +16,64 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        $users = $this->userService->getAll();
-        return UserResource::collection($users);
+        $searchTerm = $request->input('search');
+        $users = $this->userService->getAllWithSearchAndPagination($searchTerm);
+
+        return view('admin.users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function show($id)
+    {
+        $user = $this->userService->getById($id);
+
+        return view('admin.users.show', compact('user'));
+    }
+
     public function create()
     {
-        //
+        return view('admin.users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(CreateUserRequest $createUserRequest)
+    public function store(CreateUserRequest $request)
     {
-        $data = $createUserRequest->validated();
-        $result = $this->userService->create($data);
-        if ($result) {
-            return new UserResource($result);
+        $validatedData = $request->validated();
+        $this->userService->create($validatedData);
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $user = $this->userService->getById($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(UpdateUserRequest $request, $id)
+    {
+        $validatedData = $request->validated();
+        $result = $this->userService->update($validatedData, $id);
+        if (!$result) {
+            return redirect()->back()->with('error', 'User not found.');
         }
-        return response()->json([
-            'message' => 'User created failed',
-        ], 500);
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy($id)
     {
-        //
+        $this->userService->delete($id);
+
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function restore($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $result = $this->userService->restore($id);
+        if (!$result) {
+            return redirect()->back()->with('error', 'Người dùng không tồn tại.');
+        }
+        return redirect()->route('admin.users.index')->with('success', 'Người dùng đã được khôi phục thành công.');
     }
 }

@@ -11,11 +11,20 @@
                 <p class="text-lg flex items-center">
                     <strong class="w-1/3">Trạng thái:</strong>
                     <span class="px-3 py-1 rounded-lg
-                @if ($order->order_status === 'Đang xử lý đơn hàng') bg-yellow-100 text-yellow-800
-                @elseif ($order->order_status === 'Hoàn thành') bg-green-100 text-green-800
-                    @else bg-red-100 text-red-800
+                @if ($order->order_status === 'pending') bg-yellow-100 text-yellow-800
+                @elseif ($order->order_status === 'delivered') bg-green-100 text-green-800
+                @elseif ($order->order_status === 'canceled') bg-red-100 text-red-800
+                    @else bg-blue-100 text-blue-800
                 @endif">
-                        {{ ucfirst($order->order_status) }}
+                        @if ($order->order_status === 'delivered')
+                            Đã giao thành công
+                        @elseif ($order->order_status === 'pending')
+                            Chờ xử lý
+                        @elseif ($order->order_status === 'canceled')
+                            Đã hủy
+                        @else
+                            Đang giao
+                        @endif
                     </span>
                 </p>
                 <div class="mt-4 border-t border-gray-200 pt-4">

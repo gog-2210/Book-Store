@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +21,8 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $categoryId = $this->route('id'); // Lấy ID của danh mục từ route.
-
         return [
-            'category_name' => 'required|string|max:255|unique:categories,category_name,' . $categoryId,
-            'parent_id'     => 'nullable|exists:categories,id|not_in:' . $categoryId, // Không được chọn chính nó làm cha
-            'order'         => 'nullable|integer|min:0',
+            'order_status' => ['required','in:pending,shipped,delivered,canceled']
         ];
     }
 }

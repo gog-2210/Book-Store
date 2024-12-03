@@ -27,16 +27,25 @@
                                 {{ number_format($order->payment->amount, 0, ',', '.') }} đ
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <span class="px-2 py-1 rounded-full text-white
-                                    @if ($order->order_status === 'Hoàn thành') bg-green-500
-                                    @elseif ($order->order_status === 'Đang xử lý đơn hàng') bg-yellow-500
-                                    @else bg-red-500 @endif">
-                                    {{ $order->order_status }}
+                                <span class="px-2 py-1 rounded-lg text-white
+                                            @if ($order->order_status === 'delivered') bg-green-500
+                                            @elseif ($order->order_status === 'pending') bg-yellow-500
+                                            @elseif ($order->order_status === 'canceled') bg-red-500
+                                                @else bg-blue-500
+                                            @endif ">
+                                    @if ($order->order_status === 'delivered')
+                                        Đã giao thành công
+                                    @elseif ($order->order_status === 'pending')
+                                        Chờ xử lý
+                                    @elseif ($order->order_status === 'canceled')
+                                        Đã hủy
+                                    @else
+                                        Đang giao
+                                    @endif
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-center">
-                                <a href="{{ route('order.show', $order->id) }}"
-                                    class="text-cyan-600 hover:underline">
+                                <a href="{{ route('order.show', $order->id) }}" class="text-cyan-600 hover:underline">
                                     Xem
                                 </a>
                             </td>
