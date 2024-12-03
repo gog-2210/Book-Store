@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('cart', app(CartService::class)->getCart());
             $view->with('itemCategories', app(CategoryService::class)->getAll());
             $view->with('itemParentCategories', app(CategoryService::class)->getByParentID(0));
-            $view->with('itemSubCategories', app(CategoryService::class)->getCategoriesByParentID(0));
         });
     }
 }

@@ -16,11 +16,11 @@
     <div class="container mx-auto">
         <h2 class="text-2xl font-bold text-center mb-8">Danh Mục Nổi Bật</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        @foreach($itemCategories as $category)
-            <x-category-item :category="$category"
-                class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out" />
-        @endforeach
-    </div>
+            @foreach($itemCategories as $category)
+                <x-category-item :category="$category"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out" />
+            @endforeach
+        </div>
     </div>
 </section>
 
@@ -40,7 +40,6 @@
                         </div>
                     @endforeach
                 </div>
-
             </div>
         </div>
 
