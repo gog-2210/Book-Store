@@ -30,10 +30,10 @@
             <!-- Dropdown Menu on Click -->
             <div class="relative">
                 <!-- Dropdown Menu -->
-                <div role="menu"
+                <div
                     class="absolute hidden bg-white border border-gray-300 shadow-lg rounded-md mt-2 w-80 z-10 category-dropdown">
-                    @foreach($parentCategories as $category)
-                        <div role="menu-parent" class="parent-category relative group pc-{{ $category->id }}">
+                    @foreach($itemParentCategories as $category)
+                        <div class="parent-category relative group pc-{{ $category->id }}">
                             <!-- Parent Category Item -->
                             <a href="{{ route('category.show', $category->id) }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100 font-bold">
@@ -41,14 +41,25 @@
                             </a>
 
                             <!-- Subcategories (Hidden by Default) -->
-                            <div
-                                class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
-                                @foreach($category->subCategories as $subCategory)
-                                    <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
-                                        {{ $subCategory->category_name }}
-                                    </a>
-                                @endforeach
-                            </div>
+                            @if ($category->subCategories->count() > 0)
+                                <div
+                                    class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                    @foreach($category->subCategories as $subCategory)
+                                        <a href="{{ route('category.show', $subCategory->id) }}"
+                                            class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                            {{ $subCategory->category_name }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
+                            <!-- <div
+                                    class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                    @foreach($category->subCategories as $subCategory)
+                                        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                            {{ $subCategory->category_name }}
+                                        </a>
+                                    @endforeach
+                                </div> -->
                         </div>
                     @endforeach
                 </div>
@@ -77,7 +88,7 @@
         <!-- Cart and User Section -->
         <div class="flex items-center space-x-4">
             <!-- Cart -->
-            <a href="{{ route('cart') }}" class="relative flex items-center space-x-2 group">
+            <a href="{{ route('cart') }}" class="relative flex items-center space-x-2">
                 <!-- Icon giỏ hàng -->
                 <div class="relative">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -102,7 +113,6 @@
                 </div>
             </a>
 
-
             <!-- User -->
             @auth
                 <!-- Dropdown for authenticated user -->
@@ -115,7 +125,6 @@
                         </svg>
                     </button>
                     @if (Auth::user())
-                        <!-- Hiển thị "Nhân viên" nếu là staff -->
                         <!-- Dropdown -->
                         <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow hidden" id="userDropdown">
                             @if (Auth::user()->role === 1)
@@ -130,7 +139,6 @@
                             </form>
                         </div>
                     @endif
-
                 </div>
             @else
                 <a href="{{ route('login') }}"
@@ -164,15 +172,13 @@
     });
 
     function toggleDropdown(event) {
-        // Prevent the click event from bubbling up
         event.stopPropagation();
-
-        // Get the dropdown menu
-        const dropdown = event.target.closest('.group').querySelector('.category-dropdown');
-
-        // Toggle visibility of the dropdown menu
-        dropdown.classList.toggle('hidden');
+        const dropdown = event.target.closest('.group')?.querySelector('.category-dropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('hidden');
+        }
     }
+
 
     // Close the dropdown if user clicks outside
     document.addEventListener('click', function (event) {
@@ -186,25 +192,24 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        const parentCategories = document.querySelectorAll('.parent-category');
-
-        parentCategories.forEach((parent) => {
-            parent.addEventListener('mouseenter', function () {
-                // Ẩn tất cả sub-categories
-                document.querySelectorAll('.sub-categories').forEach(sub => {
-                    sub.classList.add('hidden');
+        const itemParentCategories = document.querySelectorAll('.parent-category');
+        if (itemParentCategories.length > 0) {
+            itemParentCategories.forEach((parent) => {
+                parent.addEventListener('mouseenter', function () {
+                    const subCategories = parent.querySelector('.sub-categories');
+                    if (subCategories) {
+                        subCategories.classList.remove('hidden');
+                    }
                 });
 
-                // Hiển thị sub-categories của parent đang hover
-                const subCategories = parent.querySelector('.sub-categories');
-                subCategories.classList.remove('hidden');
+                parent.addEventListener('mouseleave', function () {
+                    const subCategories = parent.querySelector('.sub-categories');
+                    if (subCategories) {
+                        subCategories.classList.add('hidden');
+                    }
+                });
             });
-
-            parent.addEventListener('mouseleave', function () {
-                // Ẩn sub-categories khi rời khỏi
-                const subCategories = parent.querySelector('.sub-categories');
-                subCategories.classList.add('hidden');
-            });
-        });
+        }
     });
+
 </script>

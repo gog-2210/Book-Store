@@ -8,11 +8,10 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Services\AuthService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Password;
-use Request;
+
 
 class AuthController extends Controller
 {

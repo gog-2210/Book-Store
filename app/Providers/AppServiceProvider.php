@@ -24,9 +24,8 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $view->with('cart', app(CartService::class)->getCart());
-
-            $view->with('parentCategories', app(CategoryService::class)->getByParentID(0));
-            $view->with('categories', app(CategoryService::class)->getAll());
+            $view->with('itemCategories', app(CategoryService::class)->getAll());
+            $view->with('itemParentCategories', app(CategoryService::class)->getByParentID(0));
         });
     }
 }

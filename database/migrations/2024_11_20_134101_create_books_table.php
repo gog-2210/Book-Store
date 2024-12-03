@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('publish_date')->nullable();
             $table->boolean('suggest')->nullable();
-            $table->foreignId('author_id')->nullable()->constrained('authors');
+            $table->string('author')->nullable();
             $table->foreignId('company_id')->nullable()->constrained('companies');
             $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->string('publishing_house')->nullable();

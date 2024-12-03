@@ -2,7 +2,8 @@
 namespace App\Services;
 
 use App\Models\Book;
-
+use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class BookService
 {
@@ -43,15 +44,28 @@ class BookService
         return $this->model->where('suggest', 1)->get();
     }
 
-    public function create($data)
+    public function create(array $data)
     {
-        return $this->model->create($data);
+        if (isset($data['book_image'])) {
+            $data['book_image'] = $data['book_image']->store('book_images', 'public');
+        }
+
+        return Book::create($data);
     }
 
-    public function update($data, $id)
+    public function update(Book $book, array $data)
     {
-        return $this->model->where('id', $id)->update($data);
+        if (isset($data['book_image'])) {
+            if ($book->book_image) {
+                Storage::disk('public')->delete($book->book_image);
+            }
+
+            $data['book_image'] = $data['book_image']->store('book_images', 'public');
+        }
+
+        return $book->update($data);
     }
+    
 
     public function updateQuantityAndSold($id, $quantity)
     {
@@ -65,4 +79,37 @@ class BookService
     {
         return $this->model->where('id', $id)->delete();
     }
+
+    public function getWithFilters($filters = [], $perPage = 10)
+    {
+        $query = $this->model->query();
+    
+        // Lọc theo tên sách
+        if (!empty($filters['book_name'])) {
+            $query->where('book_name', 'like', '%' . $filters['book_name'] . '%');
+        }
+    
+         // Lọc theo tên sách
+        if (!empty($filters['author'])) {
+            $query->where('author', 'like', '%' . $filters['author'] . '%');
+        }
+
+        // Lọc theo thể loại cha
+        if (!empty($filters['category_id'])) {
+            $query->where('category_id', $filters['category_id']);
+        }
+    
+        // Lọc theo danh mục con
+        if (!empty($filters['subcategory_id'])) {
+            $query->where('subcategory_id', $filters['subcategory_id']);
+        }
+    
+        return $query->paginate($perPage);
+    }
+
+    public function getSubCategories($parentId)
+    {
+        return Category::where('parent_id', $parentId)->get();
+    }
+
 }
