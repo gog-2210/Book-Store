@@ -42,24 +42,38 @@
 
                             <!-- Subcategories (Hidden by Default) -->
                             @if ($category->subCategories->count() > 0)
-                                <div
-                                    class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
-                                    @foreach($category->subCategories as $subCategory)
-                                        <a href="{{ route('category.show', $subCategory->id) }}"
-                                            class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
-                                            {{ $subCategory->category_name }}
-                                        </a>
-                                    @endforeach
-                                </div>
+                                @auth
+                                    <div
+                                        class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                        @foreach($category->subCategories as $subCategory)
+                                            <a href="{{ route('category.show', $subCategory->id) }}"
+                                                class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                                {{ $subCategory->category_name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endauth
+                                @guest
+                                    <div
+                                        class="sub-categories flex flex-wrap left-full top-0 bg-white border border-gray-300 shadow-lg rounded-md w-auto mt-1 group-[.pc-{{ $category->id }}]:block">
+                                        @foreach($category->subCategories as $subCategory)
+                                            <a href="{{ route('category.show', $subCategory->id) }}"
+                                                class="block px-4 py-2 text-gray-600 hover:bg-gray-200 whitespace-nowrap">
+                                                {{ $subCategory->category_name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endguest
+
                             @endif
                             <!-- <div
-                                    class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
-                                    @foreach($category->subCategories as $subCategory)
-                                        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
-                                            {{ $subCategory->category_name }}
-                                        </a>
-                                    @endforeach
-                                </div> -->
+                                                            class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                                            @foreach($category->subCategories as $subCategory)
+                                                                <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                                                    {{ $subCategory->category_name }}
+                                                                </a>
+                                                            @endforeach
+                                                        </div> -->
                         </div>
                     @endforeach
                 </div>
