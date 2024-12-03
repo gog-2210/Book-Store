@@ -20,7 +20,7 @@ class OrdersSeederTable extends Seeder
                     [
                         'user_id' => rand(2, 10),
                         'payment_id' => $i,
-                        'order_status' => 'Đang xử lý đơn hàng',
+                        'order_status' => rand(0, 1) ? 'pending' : 'delivered',
                         'shipping_address' => 'Nhà số ' . $i . ' Nguyễn Hoàng, ĐN City',
                         'phoneReceiver' => '09000' . rand(0, 10) . rand(0, 10) . rand(0, 10) . rand(0, 10) . rand(0, 10),
                         'nameReceiver' => 'Tên người nhận ' . $i,

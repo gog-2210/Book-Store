@@ -68,7 +68,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->categoryService->getById($id); // Lấy danh mục để chỉnh sửa
-        $parentCategories = $this->categoryService->getByParentId(null); // Lấy danh mục cha
+        $parentCategories = $this->categoryService->getByParentId(0); // Lấy danh mục cha
         return view('admin.categories.edit', compact('category', 'parentCategories'));
     }
 
@@ -94,8 +94,8 @@ class CategoryController extends Controller
 
     public function getSubCategories(Request $request)
     {
-        $subCategories = Category::where('parent_id', $request->parent_id)->get();
+        $subCategories = $this->categoryService->getSubCategories($request->parent_id);
         return response()->json($subCategories);
     }
-    
+
 }

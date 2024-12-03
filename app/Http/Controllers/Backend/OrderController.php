@@ -3,78 +3,42 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\UpdateOrderRequest;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // $orders = Order::with('items.product')->where('user_id', auth()->id())->get();
-        // return view('order.index', compact('orders'));
-        // return view('client.purchase-order');
-    }
+        $query = $this->orderService->query();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        // Lọc theo trạng thái
+        if ($request->filled('order_status')) {
+            $query->where('order_status', $request->order_status);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        // // Validate dữ liệu thanh toán
-        // $request->validate([
-        //     'payment_method' => 'required|string',
-        //     'address' => 'required|string|max:255',
-        //     'phone' => 'required|string|max:15',
-        // ]);
+        // Lọc theo ngày
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
 
-        // // Lấy giỏ hàng hiện tại
-        // $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
+        $orders = $query->paginate(10);
 
-        // if ($cartItems->isEmpty()) {
-        //     return redirect()->route('cart.index')->with('error', 'Giỏ hàng trống. Không thể đặt hàng.');
-        // }
-
-        // // Tính tổng giá trị đơn hàng
-        // $totalPrice = $cartItems->sum(function ($item) {
-        //     return $item->quantity * $item->product->price;
-        // });
-
-        // // Tạo đơn hàng
-        // $order = Order::create([
-        //     'user_id' => auth()->id(),
-        //     'total_price' => $totalPrice,
-        //     'payment_method' => $request->payment_method,
-        //     'address' => $request->address,
-        //     'phone' => $request->phone,
-        //     'status' => 'pending', // trạng thái mặc định: chờ xử lý
-        // ]);
-
-        // // Lưu từng sản phẩm trong giỏ hàng vào bảng order_items
-        // foreach ($cartItems as $item) {
-        //     $order->items()->create([
-        //         'product_id' => $item->product_id,
-        //         'quantity' => $item->quantity,
-        //         'price' => $item->product->price,
-        //     ]);
-        // }
-
-        // // Xóa giỏ hàng sau khi đặt hàng thành công
-        // Cart::where('user_id', auth()->id())->delete();
-
-        // // Gửi email xác nhận đơn hàng (nếu cần)
-        // // Mail::to(auth()->user()->email)->send(new OrderConfirmationMail($order));
-
-        // return redirect()->route('order.show', $order->id)->with('success', 'Đặt hàng thành công!');
+        return view('admin.orders.index', compact('orders'));
     }
 
     /**
@@ -82,31 +46,17 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        // $order = Order::with('items.product')->where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-        // return view('order.show', compact('order'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $order = $this->orderService->getOrderDetail($id);
+        return view('admin.orders.show', compact('order'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOrderRequest $request, $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $validatedData = $request->validated();
+        $this->orderService->updateOrderStatus($id, $validatedData['order_status']);
+        return redirect()->route('admin.orders.index')->with('success', 'Trạng thái đơn hàng đã được cập nhật.');
     }
 }
