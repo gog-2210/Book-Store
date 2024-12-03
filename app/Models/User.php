@@ -56,4 +56,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'block' => 'boolean',
         'role' => 'integer',
     ];
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
