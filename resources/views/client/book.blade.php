@@ -6,7 +6,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Hình ảnh sách -->
         <div class="flex justify-center">
-            <img src="{{ asset('storage/' . $book->book_image) }}" alt="{{ $book->book_name }}"
+            <img src="{{ asset('storage/book_images/' . $book->book_image) }}" alt="{{ $book->book_name }}"
                 class="w-full max-w-md object-cover shadow-lg rounded-lg">
         </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -19,10 +20,12 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->userService->getAll();
-        return UserResource::collection($users);
+        $search = $request->input('search');
+        $users = $this->userService->getAllUsersWithTrashed($search);
+
+        return view('admin.users.index', compact('users', 'search'));
     }
 
     /**
@@ -77,6 +80,28 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($user->deleted_at) {
+            return redirect()->back()->with('error', 'Người dùng đã bị khoá trước đó.');
+        }
+    
+        $user->delete(); // Soft delete (khoá tài khoản)
+    
+        return redirect()->route('admin.users.index')->with('success', 'Người dùng đã bị khoá.');
+    }
+
+    // Mở khóa user (khôi phục)
+    public function unlock($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        if (!$user->deleted_at) {
+            return redirect()->back()->with('error', 'Người dùng đang hoạt động.');
+        }
+
+        $user->restore();
+
+        return redirect()->route('admin.users.index')->with('success', 'Người dùng đã được mở khóa.');
     }
 }
