@@ -46,7 +46,7 @@
                                 <input type="hidden" name="cart_items[]" value="{{ $item->id }}">
                                 <td class="px-4 py-4 flex items-center">
                                     <a href="{{ route('book.show', $item->book->id) }}" class="flex items-center space-x-4">
-                                        <img src="{{ $item->book->book_image }}" alt="{{ $item->book->book_name }}"
+                                        <img src="{{ asset('storage/'.$item->book->book_image) }}" alt="{{ $item->book->book_name }}"
                                             class="w-16 h-16 object-cover rounded-lg shadow-md">
                                         <div>
                                             <p class="font-semibold text-gray-700">

@@ -67,7 +67,7 @@
                     @foreach ($order->orderDetails as $detail)
                         <tr class="border-b">
                             <td class="px-4 py-3 flex items-center space-x-4">
-                                <img src="{{ $detail->book->book_image }}" alt="{{ $detail->book->book_name }}"
+                                <img src="{{ asset('storage/'.$detail->book->book_image) }}" alt="{{ $detail->book->book_name }}"
                                     class="w-16 h-16 object-cover rounded-lg">
                                 <span>{{ $detail->book->book_name }}</span>
                             </td>
