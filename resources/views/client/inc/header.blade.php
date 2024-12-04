@@ -67,13 +67,13 @@
 
                             @endif
                             <!-- <div
-                                    class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
-                                    @foreach($category->subCategories as $subCategory)
-                                        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
-                                            {{ $subCategory->category_name }}
-                                        </a>
-                                    @endforeach
-                                </div> -->
+                                        class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                        @foreach($category->subCategories as $subCategory)
+                                            <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                                {{ $subCategory->category_name }}
+                                            </a>
+                                        @endforeach
+                                    </div> -->
                         </div>
                     @endforeach
                 </div>
@@ -82,22 +82,7 @@
         </div>
 
         <!-- Search bar -->
-        <div class="flex-grow mx-4 mr-16">
-            <form action="" method="GET" class="flex">
-                <input type="text" name="q" placeholder="Tìm kiếm..." class="flex-grow p-2 border rounded-l-md">
-                <button type="submit"
-                    class="bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M11 2a9 9 0 105.64 16.11l5.63 5.63a1 1 0 001.41-1.41l-5.63-5.63A9 9 0 0011 2zm0 2a7 7 0 110 14 7 7 0 010-14z" />
-                    </svg>
-                </button>
-            </form>
-        </div>
-        <div class="flex items-center space-x-6">
-        </div>
-
-
+        <x-search-bar />
 
         <!-- Cart and User Section -->
         <div class="flex items-center space-x-4">

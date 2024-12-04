@@ -18,7 +18,7 @@ class HomeController extends Controller
     protected $orderDetailService;
     protected $paymentService;
 
-    public function __construct(BookService $bookService, CategoryService $categoryService,OrderService $orderService, OrderDetailService $orderDetailService, PaymentService $paymentService)
+    public function __construct(BookService $bookService, CategoryService $categoryService, OrderService $orderService, OrderDetailService $orderDetailService, PaymentService $paymentService)
     {
         $this->bookService = $bookService;
         $this->categoryService = $categoryService;
@@ -64,5 +64,14 @@ class HomeController extends Controller
         $orderDetails = $this->orderDetailService->getByOrderId($orderId);
         $totalPrice = $order->payment->amount;
         return view('client.purchase-order-detail', compact('order', 'orderDetails', 'totalPrice'));
+    }
+
+    public function search(Request $request)
+    {
+        $books = $this->bookService->search($request->q);
+
+        return response()->json([
+            'books' => $books
+        ]);
     }
 }

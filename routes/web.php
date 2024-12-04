@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Backend\BookController;
 use App\Http\Controllers\Backend\PaymentController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Backend\CartController;
 use App\Http\Controllers\Backend\CategoryController;
@@ -48,10 +49,11 @@ Route::get('/email/verify', [AuthController::class, 'notice'])->name('verificati
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', [AuthController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
 Route::get('/', [HomeController::class, 'home'])->name('client.index');
 Route::get('/sach/{bookId}', [HomeController::class, 'book'])->name('book.show');
 Route::get('/danh-muc/{categoryId}', [HomeController::class, 'category'])->name('category.show');
+Route::get('/tim-kiem', [HomeController::class, 'search'])->name('search');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Client routes
@@ -72,11 +74,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dat-hang', [HomeController::class, 'purchaseOrder'])->name('order');
     Route::get('/dat-hang/{orderId}', [HomeController::class, 'purchaseOrderDetail'])->name('order.show');
 
-
+    Route::get('/chat/users', [ChatController::class, 'getUsers'])->name('chat.getUsers');
+    Route::get('/chat/messages/{receiverId}', [ChatController::class, 'getMessages'])->name('chat.getMessages');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.sendMessage');
 
     // Admin routes
     Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
+
+        Route::get('/chat/users', [ChatController::class, 'getUsers'])->name('admin.chat.getUsers');
+        Route::get('/chat/messages/{receiverId}', [ChatController::class, 'getMessages'])->name('admin.chat.getMessages');
+        Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('admin.chat.sendMessage');
 
         // Route for Categories
         Route::prefix('categories')->name('admin.categories.')->group(function () {
@@ -124,6 +132,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('delete/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::put('{id}/restore', [UserController::class, 'restore'])->name('restore');
         });
+
+        // Route for Orders
         Route::prefix('orders')->name('admin.orders.')->group(function () {
             Route::get('/', [OrderController::class, 'index'])->name('index');
             Route::get('{id}', [OrderController::class, 'show'])->name('show');

@@ -74,7 +74,10 @@
             </div>
         </div>
     </div>
-
+    <a href="{{ route('chat.getUsers') }}"
+        class="fixed bottom-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-600 transition-all">
+        Chat
+    </a>
     <!-- Latest Orders Section -->
     <div class="bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Đơn hàng mới nhất</h2>
@@ -97,11 +100,11 @@
                             <td class="p-4">{{ $order->nameReceiver }}</td>
                             <td class="p-4">
                                 <span class="px-3 py-1 rounded-full
-                                        @if ($order->order_status === 'pending') bg-yellow-100 text-yellow-800
-                                        @elseif ($order->order_status === 'delivered') bg-green-100 text-green-800
-                                        @elseif ($order->order_status === 'canceled') bg-red-100 text-red-800
-                                            @else bg-blue-100 text-blue-800
-                                        @endif">
+                                            @if ($order->order_status === 'pending') bg-yellow-100 text-yellow-800
+                                            @elseif ($order->order_status === 'delivered') bg-green-100 text-green-800
+                                            @elseif ($order->order_status === 'canceled') bg-red-100 text-red-800
+                                                @else bg-blue-100 text-blue-800
+                                            @endif">
                                     @if ($order->order_status === 'delivered')
                                         Đã giao thành công
                                     @elseif ($order->order_status === 'pending')

@@ -48,7 +48,7 @@ class CategoryController extends Controller
     public function store(CreateCategoryRequest $request)
     {
         $validated = $request->validated();
-        $this->categoryService->create($validated); // Sử dụng service để tạo danh mục mới
+        $this->categoryService->createWithOrder($validated); // Sử dụng service để tạo danh mục mới
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
