@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('payment_id')->nullable()->constrained('payments');
-            $table->string('order_status')->default('Đang xử lý đơn hàng');
+            $table->string('order_status')->default('pending');
             $table->string('shipping_address')->nullable();
             $table->string('phoneReceiver')->nullable();
             $table->string('nameReceiver')->nullable();

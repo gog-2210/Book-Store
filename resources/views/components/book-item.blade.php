@@ -3,7 +3,7 @@
     <a href="{{ route('book.show', $book->id) }}">
         <!-- Hình ảnh sách -->
         <img src="{{ asset('storage/'.$book->book_image) }}"
-            class="w-full h-44 object-cover group-hover:opacity-80 transition-opacity duration-300"
+            class="w-full h-44 object-contain group-hover:opacity-80 transition-opacity duration-300"
             alt="{{ $book->book_name }}">
 
         <div class="p-4">

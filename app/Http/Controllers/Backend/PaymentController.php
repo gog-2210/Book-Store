@@ -57,38 +57,12 @@ class PaymentController extends Controller
         ksort($inputData);
         $hashData = urldecode(http_build_query($inputData));
         $secureHash = hash_hmac('sha512', $hashData, config('services.vnpay.vnp_HashSecret'));
+
         $data = session()->get('data');
+
         if ($vnp_SecureHash === $secureHash) {
             if ($request->input('vnp_ResponseCode') == '00') {
-                // Lưu thông tin đơn hàng
-                $order = $this->orderService->create([
-                    'user_id' => auth()->id(),
-                    'payment_id' => $data['payment_id'],
-                    'shipping_address' => $data['shipping_address'],
-                    'phoneReceiver' => $data['phoneReceiver'],
-                    'nameReceiver' => $data['nameReceiver'],
-                ]);
-
-                // Lưu thông tin chi tiết đơn hàng
-                foreach ($data['cart_items'] as $item) {
-                    $cartItem = $this->cartService->getCartById($item);
-                    $this->orderDetailService->create([
-                        'order_id' => $order->id,
-                        'book_id' => $cartItem->book_id,
-                        'quantity' => $cartItem->quantity,
-                        'price' => $cartItem->book->price,
-                    ]);
-                    $this->bookService->updateQuantityAndSold($cartItem->book_id, $cartItem->quantity);
-                }
-
-                $this->paymentService->update($data['payment_id'], ['payment_status' => 'Đã thanh toán']);
-
-                $this->cartService->deleteByUserId(auth()->id());
-
-                session()->forget('cart');
-                session()->forget('data');
-
-                return redirect()->route('order')->with('success', 'Thanh toán thành công!');
+                return $this->paymentService->handleReturn($data);
             } else {
                 $this->paymentService->delete($data['payment_id']);
 

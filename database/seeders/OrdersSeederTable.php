@@ -23,7 +23,7 @@ class OrdersSeederTable extends Seeder
                         'order_status' => rand(0, 1) ? 'pending' : 'delivered',
                         'shipping_address' => 'Nhà số ' . $i . ' Nguyễn Hoàng, ĐN City',
                         'phoneReceiver' => '09000' . rand(0, 10) . rand(0, 10) . rand(0, 10) . rand(0, 10) . rand(0, 10),
-                        'nameReceiver' => 'Tên người nhận ' . $i,
+                        'nameReceiver' => 'Người nhận ' . $i,
                         'shipping_fee' => rand(0, 1) * 20000,
                         'created_at' => new DateTime(),
                         'updated_at' => new DateTime()

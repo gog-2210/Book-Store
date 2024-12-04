@@ -65,7 +65,7 @@ class BookService
 
         return $book->update($data);
     }
-    
+
 
     public function updateQuantityAndSold($id, $quantity)
     {
@@ -83,12 +83,12 @@ class BookService
     public function getWithFilters($filters = [], $perPage = 10)
     {
         $query = $this->model->query();
-    
+
         // Lọc theo tên sách
         if (!empty($filters['book_name'])) {
             $query->where('book_name', 'like', '%' . $filters['book_name'] . '%');
         }
-    
+
          // Lọc theo tên sách
         if (!empty($filters['author'])) {
             $query->where('author', 'like', '%' . $filters['author'] . '%');
@@ -98,12 +98,12 @@ class BookService
         if (!empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }
-    
+
         // Lọc theo danh mục con
         if (!empty($filters['subcategory_id'])) {
             $query->where('subcategory_id', $filters['subcategory_id']);
         }
-    
+
         return $query->paginate($perPage);
     }
 
