@@ -18,6 +18,10 @@
 </head>
 
 <body class="antialiased">
+    <a href="{{ route('chat.getUsers') }}" 
+        class="fixed bottom-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-600 transition-all">
+         Chat
+    </a>
     <div class="site-wrap">
         @include('components.alerts')
         @include('client.inc.header')

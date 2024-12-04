@@ -18,6 +18,7 @@
 </head>
 
 <body class="antialiased bg-gray-100 flex flex-col min-h-screen">
+    <a class="nav-link" href="{{ route('chat.getUsers') }}">Chat</a>
 
     @include('components.alerts')
     {{-- Sidebar --}}
@@ -25,6 +26,7 @@
 
     <div class="flex flex-1">
         {{-- Main Content --}}
+
         <div class="flex-1 flex flex-col w-full ml-64 h-screen overflow-hidden">
             {{-- Header --}}
             @include('admin.inc.header')

@@ -2,40 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
 
-    public function index($receiverId)
+    // Lấy danh sách người dùng
+    public function getUsers()
     {
-        $messages = Message::where(function ($query) use ($receiverId) {
-            $query->where('sender_id', auth()->id())
-                ->where('receiver_id', $receiverId);
-        })->orWhere(function ($query) use ($receiverId) {
-            $query->where('sender_id', $receiverId)
-                ->where('receiver_id', auth()->id());
-        })->orderBy('created_at', 'asc')->get();
+        // Kiểm tra xem người dùng có phải là admin hay không
+        if (auth()->user()->role == 1) {
+            // Admin có thể thấy tất cả người dùng trừ chính mình
+            $users = User::where('id', '!=', auth()->id())->get();
+        } else {
+            // Client chỉ thấy admin
+            $users = User::where('role', 1)->get();
+        }
 
-        return view('chat.index', compact('messages', 'receiverId'));
+        return view('chat.users', compact('users'));
     }
 
-    public function store(Request $request)
+
+    public function getMessages($receiverId)
     {
-        $request->validate([
-            'receiver_id' => 'required|exists:users,id',
-            'message' => 'required|string',
-        ]);
+        $receiver = User::findOrFail($receiverId);
     
+        $messages = Message::where(function ($query) use ($receiverId) {
+                $query->where('sender_id', Auth::id())
+                      ->where('receiver_id', $receiverId);
+            })
+            ->orWhere(function ($query) use ($receiverId) {
+                $query->where('sender_id', $receiverId)
+                      ->where('receiver_id', Auth::id());
+            })
+            ->orderBy('created_at', 'ASC') // Sắp xếp theo thứ tự tăng dần
+            ->get();
+    
+        return view('chat.messages', compact('messages', 'receiver'));
+    }
+    
+
+    public function sendMessage(Request $request)
+    {
         $message = Message::create([
-            'sender_id' => auth()->id(),
+            'sender_id' => Auth::id(),
             'receiver_id' => $request->receiver_id,
             'message' => $request->message,
         ]);
-    
-        return response()->json($message, 201);
-    }
-    
 
+        broadcast(new MessageSent($message))->toOthers();
+
+        return back();
+    }
 }
