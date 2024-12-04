@@ -52,3 +52,9 @@
     background: #000;
 }
 
+#search-results {
+    position: absolute;  /* Đặt kết quả lên trên các thành phần khác */
+    background: #fff;    /* Màu nền của kết quả tìm kiếm */
+    z-index: 9999;       /* Đảm bảo kết quả không bị che khuất */
+    width: 50%;          /* Chiều rộng của kết quả tìm kiếm bằng chiều rộng của khối cha */
+}

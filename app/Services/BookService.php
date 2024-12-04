@@ -14,6 +14,11 @@ class BookService
         $this->model = $book;
     }
 
+    public function search($keyword)
+    {
+        return $this->model->where('book_name', 'like', '%' . $keyword . '%')->get();
+    }
+
     public function getAll()
     {
         return $this->model->all();
