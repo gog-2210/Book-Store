@@ -75,6 +75,23 @@ class CategoryService
         return $this->model->where('parent_id', 0)->get();
     }
 
+    public function createWithOrder($data)
+    {
+        // Chỉ thực hiện nếu category này có parent_id khác 0
+        if (isset($data['parent_id']) && $data['parent_id'] != 0) {
+            // Lấy order lớn nhất của các category có parent_id khác 0
+            $maxOrder = $this->model
+                ->where('parent_id', '!=', 0)
+                ->max('order');
 
+            // Nếu có order, tăng thêm 1; nếu không, đặt giá trị order là 1
+            $data['order'] = $maxOrder ? $maxOrder + 1 : 1;
+        } else {
+            // Nếu là category cha, đảm bảo order là null hoặc giá trị mặc định
+            $data['order'] = $data['order'] ?? null;
+        }
+
+        return $this->model->create($data);
+    }
 
 }

@@ -47,12 +47,15 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
+        // Lấy dữ liệu đã được xác thực từ request
         $validated = $request->validated();
-        $this->categoryService->create($validated); // Sử dụng service để tạo danh mục mới
-
+    
+        // Sử dụng service để tạo danh mục mới với order tự động
+        $this->categoryService->createWithOrder($validated);
+    
+        // Chuyển hướng về danh sách categories với thông báo thành công
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
-
     /**
      * Display the specified resource.
      */
@@ -68,7 +71,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->categoryService->getById($id); // Lấy danh mục để chỉnh sửa
-        $parentCategories = $this->categoryService->getByParentId(null); // Lấy danh mục cha
+        $parentCategories = $this->categoryService->getByParentId(0); // Lấy danh mục cha
         return view('admin.categories.edit', compact('category', 'parentCategories'));
     }
 

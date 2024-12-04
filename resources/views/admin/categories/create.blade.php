@@ -21,11 +21,6 @@
             </select>
         </div>
 
-        <div class="mb-4">
-            <label for="order" class="block text-sm font-medium text-gray-700">Thứ Tự</label>
-            <input type="number" name="order" id="order" class="border p-2 w-full">
-        </div>
-
         <button type="submit" class="bg-blue-500 text-white p-2 rounded">Lưu</button>
     </form>
 </div>
