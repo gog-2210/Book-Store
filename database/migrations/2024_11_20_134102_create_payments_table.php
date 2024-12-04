@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('payment_status')->nullable();
             $table->string('payment_type')->nullable();
             $table->bigInteger('amount')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

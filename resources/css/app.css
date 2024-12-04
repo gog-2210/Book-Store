@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .hidden {
     display: none;
 }
@@ -14,3 +13,42 @@
 .category-dropdown:not(.hidden) {
     display: block;
 }
+.swiper-container {
+    position: relative;
+    height: 400px; /* Giới hạn chiều cao slideshow */
+    overflow: hidden; /* Đảm bảo không tràn ra ngoài khung */
+}
+
+.swiper-slide img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Căn chỉnh ảnh theo khung */
+}
+
+/* Định vị lại mũi tên điều hướng */
+.swiper-button-prev,
+.swiper-button-next {
+    color: #fff;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+/* Định vị lại dấu chấm phân trang */
+.swiper-pagination {
+    bottom: 10px; /* Căn cách đáy slideshow */
+    text-align: center;
+}
+
+/* Giới hạn chiều cao cho các thành phần pagination */
+.swiper-pagination-bullet {
+    height: 8px;
+    width: 8px;
+    background: #fff;
+    opacity: 0.7;
+}
+
+.swiper-pagination-bullet-active {
+    background: #000;
+}
+

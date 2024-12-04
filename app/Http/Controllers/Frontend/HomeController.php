@@ -48,7 +48,8 @@ class HomeController extends Controller
 
     public function category($categoryId)
     {
-        return view('client.category');
+        $books = $this->bookService->getByCategory($categoryId);
+        return view('client.category', compact('books'));
     }
 
     public function purchaseOrder()

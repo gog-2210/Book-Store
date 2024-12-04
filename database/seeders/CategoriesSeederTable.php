@@ -62,17 +62,17 @@ class CategoriesSeederTable extends Seeder
                 ],
                 [
                     'category_name' => 'Sách Học Ngoại Ngữ',
-                    'parent_id' => 1,
+                    'parent_id' => 2,
                     'order' => 8
                 ],
                 [
                     'category_name' => 'Từ Điển',
-                    'parent_id' => 1,
+                    'parent_id' => 2,
                     'order' => 9
                 ],
                 [
                     'category_name' => 'Truyện Tranh, Manga, Comic',
-                    'parent_id' => 1,
+                    'parent_id' => 2,
                     'order' => 10
                 ],
                 [

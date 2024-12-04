@@ -53,6 +53,11 @@ class CartService
         return $this->model->where('user_id', $userId)->delete();
     }
 
+    public function deleteByIds($ids)
+    {
+        return $this->model->whereIn('id', $ids)->delete();
+    }
+
     public function deleteAll()
     {
         return $this->model->where('user_id', auth()->id())->delete();

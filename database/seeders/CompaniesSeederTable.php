@@ -19,57 +19,57 @@ class CompaniesSeederTable extends Seeder
 
                 [
                     'company_name' => 'First News - Trí Việt',
-                    'company_info' => 'Công ty phát hành sách: <b>First News - Trí Việt</b>' . $lorem,
-                    'company_image' => '/storage/app/company-image/fn.jpg'
+                    'company_info' => 'Công ty phát hành sách: First News - Trí Việt' . $lorem,
+                    'company_image' => null
                 ],
                 [
                     'company_name' => 'Công ty Văn hóa Hương Trang',
-                    'company_info' => 'Công ty phát hành sách: <b>Công ty Văn hóa Hương Trang</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Công ty Văn hóa Hương Trang' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'Skybooks',
-                    'company_info' => 'Công ty phát hành sách: <b>Skybooks</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Skybooks' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'Người Trẻ Việt',
-                    'company_info' => 'Công ty phát hành sách: <b>Người Trẻ Việt</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Người Trẻ Việt' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'Quảng Văn',
-                    'company_info' => 'Công ty phát hành sách: <b>Quảng Văn</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Quảng Văn' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'NXB Trẻ',
-                    'company_info' => 'Công ty phát hành sách: <b>NXB Trẻ</b>' . $lorem,
-                    'company_image' => '/storage/app/company-image/tre.png'
+                    'company_info' => 'Công ty phát hành sách: NXB Trẻ' . $lorem,
+                    'company_image' => null
                 ],
                 [
                     'company_name' => 'Limbooks',
-                    'company_info' => 'Công ty phát hành sách: <b>Limbooks</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Limbooks' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'Đinh Tị',
-                    'company_info' => 'Công ty phát hành sách: <b>Đinh Tị</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Đinh Tị' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'Alphabooks',
-                    'company_info' => 'Công ty phát hành sách: <b>Alphabooks</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: Alphabooks' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'DT Books',
-                    'company_info' => 'Công ty phát hành sách: <b>DT Books</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: DT Books' . $lorem,
                     'company_image' => null
                 ],
                 [
                     'company_name' => 'NXB Tổng Hợp',
-                    'company_info' => 'Công ty phát hành sách: <b>NXB Tổng Hợp</b>' . $lorem,
+                    'company_info' => 'Công ty phát hành sách: NXB Tổng Hợp' . $lorem,
                     'company_image' => null
                 ]
             ]

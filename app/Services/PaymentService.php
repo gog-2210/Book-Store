@@ -12,14 +12,28 @@ class PaymentService
     protected $vnp_Url;
     protected $vnp_ReturnUrl;
     protected $model;
+    protected $orderService;
+    protected $orderDetailService;
+    protected $paymentService;
+    protected $cartService;
+    protected $bookService;
 
-    public function __construct(Payment $payment)
-    {
+    public function __construct(
+        Payment $payment,
+        OrderService $orderService,
+        OrderDetailService $orderDetailService,
+        CartService $cartService,
+        BookService $bookService
+    ) {
         $this->vnp_TmnCode = config('services.vnpay.vnp_TmnCode');
         $this->vnp_HashSecret = config('services.vnpay.vnp_HashSecret');
         $this->vnp_Url = config('services.vnpay.vnp_Url');
         $this->vnp_ReturnUrl = config('services.vnpay.vnp_Returnurl');
         $this->model = $payment;
+        $this->orderService = $orderService;
+        $this->orderDetailService = $orderDetailService;
+        $this->cartService = $cartService;
+        $this->bookService = $bookService;
     }
 
     public function createPaymentUrl($data)
@@ -80,6 +94,41 @@ class PaymentService
         session()->put('data', $data);
 
         return $paymentUrl;
+    }
+
+    public function handleReturn($data)
+    {
+        // Lưu thông tin order
+        $order = $this->orderService->create([
+            'user_id' => auth()->id(),
+            'payment_id' => $data['payment_id'],
+            'shipping_address' => $data['shipping_address'],
+            'phoneReceiver' => $data['phoneReceiver'],
+            'nameReceiver' => $data['nameReceiver'],
+        ]);
+
+        // Lưu thông tin order detail
+        foreach ($data['cart_items'] as $item) {
+            $cartItem = $this->cartService->getCartById($item);
+            $this->orderDetailService->create([
+                'order_id' => $order->id,
+                'book_id' => $cartItem->book_id,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->book->price,
+            ]);
+            $this->bookService->updateQuantityAndSold($cartItem->book_id, $cartItem->quantity);
+        }
+
+        // Cập nhật trạng thái thanh toán
+        $this->update($data['payment_id'], ['payment_status' => 'Đã thanh toán']);
+
+        // Xóa cart theo ids
+        $this->cartService->deleteByIds($data['cart_items']);
+
+        session()->forget('cart');
+        session()->forget('data');
+
+        return redirect()->route('order')->with('success', 'Thanh toán thành công!');
     }
 
     public function create($data)

@@ -1,4 +1,4 @@
-<header class="bg-white shadow p-4">
+<header class="bg-white shadow p-4 px-20">
     <div class="container mx-auto flex items-center justify-between">
         <!-- Logo -->
         <a href="/" class="text-lg font-bold flex items-center text-gray-600">
@@ -67,13 +67,13 @@
 
                             @endif
                             <!-- <div
-                                                            class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
-                                                            @foreach($category->subCategories as $subCategory)
-                                                                <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
-                                                                    {{ $subCategory->category_name }}
-                                                                </a>
-                                                            @endforeach
-                                                        </div> -->
+                                    class="sub-categories absolute left-full top-0 hidden bg-white border border-gray-300 shadow-lg rounded-md w-60 mt-1 group-[.pc-{{ $category->id }}]:block">
+                                    @foreach($category->subCategories as $subCategory)
+                                        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">
+                                            {{ $subCategory->category_name }}
+                                        </a>
+                                    @endforeach
+                                </div> -->
                         </div>
                     @endforeach
                 </div>
@@ -101,9 +101,7 @@
 
         <!-- Cart and User Section -->
         <div class="flex items-center space-x-4">
-            <!-- Cart -->
             <a href="{{ route('cart') }}" class="relative flex items-center space-x-2">
-                <!-- Icon giỏ hàng -->
                 <div class="relative">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         class="h-6 w-6 group-hover:fill-cyan-700" fill="#2F2F2F" viewBox="0 0 24 24">
@@ -111,7 +109,6 @@
                             d="M2 1C1.44772 1 1 1.44772 1 2C1 2.55228 1.44772 3 2 3H3.21922L6.78345 17.2569C5.73276 17.7236 5 18.7762 5 20C5 21.6569 6.34315 23 8 23C9.65685 23 11 21.6569 11 20C11 19.6494 10.9398 19.3128 10.8293 19H15.1707C15.0602 19.3128 15 19.6494 15 20C15 21.6569 16.3431 23 18 23C19.6569 23 21 21.6569 21 20C21 18.3431 19.6569 17 18 17H8.78078L8.28078 15H18C20.0642 15 21.3019 13.6959 21.9887 12.2559C22.6599 10.8487 22.8935 9.16692 22.975 7.94368C23.0884 6.24014 21.6803 5 20.1211 5H5.78078L5.15951 2.51493C4.93692 1.62459 4.13696 1 3.21922 1H2ZM18 13H7.78078L6.28078 7H20.1211C20.6742 7 21.0063 7.40675 20.9794 7.81078C20.9034 8.9522 20.6906 10.3318 20.1836 11.3949C19.6922 12.4251 19.0201 13 18 13ZM18 20.9938C17.4511 20.9938 17.0062 20.5489 17.0062 20C17.0062 19.4511 17.4511 19.0062 18 19.0062C18.5489 19.0062 18.9938 19.4511 18.9938 20C18.9938 20.5489 18.5489 20.9938 18 20.9938ZM7.00617 20C7.00617 20.5489 7.45112 20.9938 8 20.9938C8.54888 20.9938 8.99383 20.5489 8.99383 20C8.99383 19.4511 8.54888 19.0062 8 19.0062C7.45112 19.0062 7.00617 19.4511 7.00617 20Z" />
                     </svg>
                     @auth
-                        <!-- Số lượng sản phẩm -->
                         @if ($cart->count() > 0)
                             <span
                                 class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -121,15 +118,12 @@
                     @endauth
                 </div>
 
-                <!-- Text -->
                 <div>
                     <span class="text-gray-600 group-hover:text-cyan-700 font-semibold">Giỏ hàng</span>
                 </div>
             </a>
 
-            <!-- User -->
             @auth
-                <!-- Dropdown for authenticated user -->
                 <div class="relative z-10">
                     <button class="flex items-center space-x-2" id="userDropdownButton">
                         <span>{{ Auth::user()->name }}</span>
@@ -139,10 +133,8 @@
                         </svg>
                     </button>
                     @if (Auth::user())
-                        <!-- Dropdown -->
                         <div class="absolute right-0 mt-2 w-48 bg-white border rounded shadow hidden" id="userDropdown">
                             @if (Auth::user()->role === 1)
-                                <!-- Hiển thị nếu là admin -->
                                 <a href="{{route('admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Trang Quản trị</a>
                             @endif
                             <a href="{{route('profile')}}" class="block px-4 py-2 hover:bg-gray-100">Tài khoản</a>
@@ -176,7 +168,7 @@
         dropdown.classList.toggle('hidden');
     });
 
-    // Close dropdown if clicking outside
+    // Close dropdown
     document.addEventListener('click', function (e) {
         const dropdown = document.getElementById('userDropdown');
         const button = document.getElementById('userDropdownButton');
@@ -194,11 +186,10 @@
     }
 
 
-    // Close the dropdown if user clicks outside
+    // Close dropdown
     document.addEventListener('click', function (event) {
         const dropdowns = document.querySelectorAll('.category-dropdown');
         dropdowns.forEach(function (dropdown) {
-            // Check if the clicked element is outside the dropdown
             if (!dropdown.contains(event.target)) {
                 dropdown.classList.add('hidden');
             }
