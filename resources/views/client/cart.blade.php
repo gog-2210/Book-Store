@@ -32,7 +32,7 @@
                                 </td>
                                 <td class="px-4 py-3 flex items-center space-x-4">
                                     <a href="{{ route('book.show', $item->book->id) }}" class="flex items-center space-x-4">
-                                        <img src="{{ $item->book->book_image }}" alt="{{ $item->book->name }}"
+                                        <img src="{{ asset('storage/'.$item->book->book_image) }}" alt="{{ $item->book->name }}"
                                             class="w-16 h-16 object-cover rounded-lg">
                                         <div>
                                             <p class="font-semibold">{{$item->book->name }}</p>
